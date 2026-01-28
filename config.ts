@@ -2,9 +2,8 @@
 /**
  * ARQUIVO DE CONFIGURAÇÃO CENTRAL
  * 
- * Para evitar que o site "quebre", usamos strings para os caminhos das imagens.
- * Se você subir os arquivos 'header.jpg' e 'autor.jpg' para a pasta raiz, 
- * eles serão priorizados automaticamente.
+ * Agora configurado para buscar imagens na pasta /images/
+ * conforme a nova estrutura do projeto.
  */
 
 export const CONFIG = {
@@ -12,9 +11,9 @@ export const CONFIG = {
   author: {
     name: "Rodrigo Veiga",
     title: "Especialista em SEO Local",
-    // Caminho para sua foto local
-    image: "autor.jpg", 
-    // Foto profissional de fallback (caso a sua não seja encontrada)
+    // Novo caminho: aponta para /images/autor.jpg
+    image: "/images/autor.jpg", 
+    // Foto profissional de fallback (caso a sua não seja encontrada ou ainda não subiu)
     fallbackImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop",
     bio: [
       "Olá, eu sou Rodrigo Veiga. Nos últimos 10 anos, ajudei centenas de pequenos e médios negócios a saírem do completo anonimato digital para se tornarem líderes em suas regiões.",
@@ -26,8 +25,9 @@ export const CONFIG = {
 
   // Configurações Visuais
   images: {
-    heroBackground: "header.jpg",
-    // Fundo de alta qualidade (caso o seu não seja encontrado)
+    // Novo caminho: aponta para /images/header.jpg
+    heroBackground: "/images/header.jpg",
+    // Fundo de alta qualidade (fallback)
     heroFallback: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
   },
 

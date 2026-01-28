@@ -11,7 +11,7 @@ export const Hero = () => {
 
   return (
     <div className="relative min-h-[95vh] flex flex-col overflow-hidden">
-      {/* IMAGEM DE FUNDO COM FALLBACK AUTOMÁTICO */}
+      {/* IMAGEM DE FUNDO - BUSCANDO EM /images/header.jpg */}
       <div className="absolute inset-0 z-0">
         <img 
           src={CONFIG.images.heroBackground} 
@@ -20,7 +20,7 @@ export const Hero = () => {
           loading="eager"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            // Se a imagem local falhar, injetamos a imagem de alta conversão do Unsplash
+            // Se o arquivo na pasta /images/ falhar, usa o Unsplash profissional
             if (target.src !== CONFIG.images.heroFallback) {
               target.src = CONFIG.images.heroFallback;
             }

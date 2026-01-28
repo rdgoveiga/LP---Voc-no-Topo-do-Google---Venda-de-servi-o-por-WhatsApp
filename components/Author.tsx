@@ -16,6 +16,7 @@ export const Author = () => {
                 className="object-cover w-full h-full"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
+                  // Fallback caso a foto local falhe
                   if (target.src !== CONFIG.author.fallbackImage) {
                     target.src = CONFIG.author.fallbackImage;
                   }
