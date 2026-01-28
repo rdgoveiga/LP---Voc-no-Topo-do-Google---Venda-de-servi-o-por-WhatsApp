@@ -4,12 +4,6 @@ import { Section } from './ui/Section';
 import { CONFIG } from '../config';
 
 export const Author = () => {
-  // Resolvemos o caminho da imagem de forma robusta
-  const getImageUrl = (path: string) => {
-    if (path.startsWith('http')) return path;
-    return `./${path}`;
-  };
-
   return (
     <div className="bg-slate-800/30">
       <Section>
@@ -17,13 +11,13 @@ export const Author = () => {
           <div className="w-full md:w-1/3">
             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-slate-700 hover:grayscale-0 transition-all duration-500">
               <img 
-                src={getImageUrl(CONFIG.author.image)} 
+                src={CONFIG.author.image} 
                 alt={`Foto do Autor - ${CONFIG.author.name}`} 
                 className="object-cover w-full h-full"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  if (!target.src.includes('unsplash')) {
-                    target.src = "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop";
+                  if (target.src !== CONFIG.author.fallbackImage) {
+                    target.src = CONFIG.author.fallbackImage;
                   }
                 }}
               />
