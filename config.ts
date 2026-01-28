@@ -2,10 +2,9 @@
 /**
  * ARQUIVO DE CONFIGURAÇÃO CENTRAL
  * 
- * Para alterar as imagens:
- * 1. Suba uma imagem chamada 'hero.jpg' para a raiz do seu repositório no GitHub.
- * 2. Suba uma imagem chamada 'autor.jpg' para a raiz do seu repositório no GitHub.
- * 3. O site atualizará automaticamente. Se o arquivo não existir, ele usará uma imagem padrão.
+ * Atualizado para refletir os arquivos no seu GitHub:
+ * 1. Imagem principal: 'header.jpg' (Já detectado no seu repositório)
+ * 2. Imagem do autor: 'autor.jpg'
  */
 
 export const CONFIG = {
@@ -13,7 +12,6 @@ export const CONFIG = {
   author: {
     name: "Rodrigo Veiga",
     title: "Especialista em SEO Local",
-    // Caminho local para facilitar o upload no GitHub
     image: "./autor.jpg", 
     bio: [
       "Olá, eu sou Rodrigo Veiga. Nos últimos 10 anos, ajudei centenas de pequenos e médios negócios a saírem do completo anonimato digital para se tornarem líderes em suas regiões.",
@@ -25,8 +23,8 @@ export const CONFIG = {
 
   // Configurações Visuais
   images: {
-    // Caminho local para facilitar o upload no GitHub
-    heroBackground: "./hero.jpg",
+    // Ajustado de 'hero.jpg' para 'header.jpg' para coincidir com seu upload
+    heroBackground: "./header.jpg",
   },
 
   // Links de Conversão

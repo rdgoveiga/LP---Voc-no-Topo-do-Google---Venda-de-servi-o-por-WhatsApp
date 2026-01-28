@@ -9,28 +9,33 @@ export const Hero = () => {
     window.open(CONFIG.links.whatsapp, "_blank");
   };
 
+  // Adicionamos um timestamp opcional para evitar cache agressivo do navegador se você trocar a imagem depois
+  const imageSrc = `${CONFIG.images.heroBackground}?v=${new Date().getTime() / 10000 | 0}`;
+
   return (
     <div className="relative min-h-[95vh] flex flex-col overflow-hidden">
-      {/* IMAGEM DE FUNDO - Preparada para o arquivo local 'hero.jpg' */}
+      {/* IMAGEM DE FUNDO - Agora apontando para header.jpg */}
       <div className="absolute inset-0 z-0">
         <img 
           src={CONFIG.images.heroBackground} 
           alt="Fundo Método Você no Topo do Google" 
           className="w-full h-full object-cover"
+          loading="eager"
           onError={(e) => {
-            // Se o usuário ainda não subiu o 'hero.jpg', usa este fallback de alta qualidade
-            (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop";
+            // Caso o arquivo header.jpg falhe por qualquer motivo técnico de path
+            const target = e.target as HTMLImageElement;
+            if (!target.src.includes('unsplash')) {
+               target.src = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop";
+            }
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/95 via-brand-dark/85 to-brand-dark"></div>
       </div>
 
-      {/* Efeitos de Luz de Fundo */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-[120px] z-0 pointer-events-none"></div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 pt-32 pb-20 flex flex-col items-center text-center flex-1 justify-center">
         
-        {/* BADGE SUPERIOR */}
         <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 text-sm md:text-base font-extrabold mb-10 badge-pulse shadow-[0_0_30px_rgba(245,158,11,0.15)] backdrop-blur-xl tracking-tight">
           <Star className="w-5 h-5 fill-amber-500 animate-[spin_4s_linear_infinite]" />
           <span className="uppercase tracking-widest leading-none">Exclusivo: Acesso ao Diagnóstico Gratuito</span>
@@ -55,7 +60,6 @@ export const Hero = () => {
           </p>
         </div>
 
-        {/* BARRA DE CONFIANÇA REFINADA */}
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm font-semibold text-slate-300 bg-slate-900/60 py-4 px-10 rounded-2xl backdrop-blur-md border border-slate-700/50 shadow-xl">
           <div className="flex items-center gap-2">
             <Check className="w-5 h-5 text-amber-500" />
