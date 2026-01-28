@@ -80,7 +80,7 @@ export const Solution = () => {
                 <div className="flex gap-4">
                     <Lightbulb className="w-6 h-6 text-amber-400 shrink-0 mt-1" />
                     <p className="text-slate-300 text-sm md:text-base italic leading-relaxed">
-                        "Nossa assessoria utiliza um método prático e testado para colocar o seu negócio no radar de quem realmente quer comprar na sua região."
+                        "Nossa estratégia foi construída e validada através de um método prático para colocar o seu negócio no radar de quem realmente quer comprar na sua região."
                     </p>
                 </div>
             </div>

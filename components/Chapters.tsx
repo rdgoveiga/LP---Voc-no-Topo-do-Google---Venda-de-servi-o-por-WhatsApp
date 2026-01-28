@@ -217,7 +217,7 @@ export const Chapters = () => {
               </div>
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-8 font-serif">
                 O <span className="text-amber-500 font-bold">Método Você no Topo do Google Local™</span> é <br />
-                <span className="text-amber-500 italic">exatamente o que você precisa se...</span>
+                <span className="text-white italic">exatamente o que você precisa se...</span>
               </h3>
               
               <div className="space-y-5">

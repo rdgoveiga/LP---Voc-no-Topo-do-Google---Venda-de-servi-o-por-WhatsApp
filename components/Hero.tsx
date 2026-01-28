@@ -37,7 +37,7 @@ export const Hero = () => {
         </h1>
         
         <p className="text-lg sm:text-xl md:text-2xl text-slate-200 mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-          Pare de perder clientes para a concorrência. Através do <span className="text-amber-500 font-bold">"Método Você no Topo do Google Local™"</span> transformamos o seu perfil do Google em uma máquina de atração de clientes locais e aumentando seu faturamento.
+          Pare de perder clientes para a concorrência. Através do <span className="text-amber-500 font-bold">Método Você no Topo do Google Local™</span> transformamos o seu perfil do Google em uma <span className="text-white font-bold">máquina de atração de clientes locais</span> e aumentando seu faturamento.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-6 justify-center w-full mb-10">
