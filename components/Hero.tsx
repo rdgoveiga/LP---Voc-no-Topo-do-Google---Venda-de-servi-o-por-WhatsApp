@@ -10,12 +10,16 @@ export const Hero = () => {
 
   return (
     <div className="relative min-h-[90vh] md:min-h-screen flex flex-col overflow-hidden">
-      {/* IMAGEM DE FUNDO */}
+      {/* IMAGEM DE FUNDO LOCAL */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop" 
-          alt="Background Hero" 
+          src="./header.jpg" 
+          alt="Fundo Método Você no Topo do Google" 
           className="w-full h-full object-cover opacity-30 md:opacity-40"
+          onError={(e) => {
+            // Fallback caso a imagem local não seja encontrada
+            e.currentTarget.src = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop";
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/95 via-brand-dark/80 to-brand-dark"></div>
       </div>
