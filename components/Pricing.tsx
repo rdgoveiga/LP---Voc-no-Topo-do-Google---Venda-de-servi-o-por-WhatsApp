@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Section } from './ui/Section';
 import { Button } from './ui/Button';
 import { ShieldCheck, Zap, ArrowRight, Clock, Shield } from 'lucide-react';
+import { CONFIG } from '../config';
 
 export const Pricing = () => {
   const [timeLeft, setTimeLeft] = useState(420); // 7 minutes in seconds
@@ -22,7 +23,7 @@ export const Pricing = () => {
   };
 
   const handleBuyClick = () => {
-    window.open("https://wa.me/5521985899548?text=Olá! Gostaria de saber mais sobre o Método Você no Topo do Google.", "_blank");
+    window.open(CONFIG.links.whatsapp, "_blank");
   };
 
   return (

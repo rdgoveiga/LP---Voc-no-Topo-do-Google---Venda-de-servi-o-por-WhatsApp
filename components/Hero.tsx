@@ -2,23 +2,24 @@
 import React from 'react';
 import { Button } from './ui/Button';
 import { Star, ArrowRight, Check } from 'lucide-react';
+import { CONFIG } from '../config';
 
 export const Hero = () => {
   const handleWhatsAppClick = () => {
-    window.open("https://wa.me/5521985899548?text=Olá! Gostaria de saber mais sobre o Método Você no Topo do Google.", "_blank");
+    window.open(CONFIG.links.whatsapp, "_blank");
   };
 
   return (
     <div className="relative min-h-[90vh] md:min-h-screen flex flex-col overflow-hidden">
-      {/* IMAGEM DE FUNDO LOCAL */}
+      {/* IMAGEM DE FUNDO - Agora vinda do config.ts */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="./header.jpg" 
+          src={CONFIG.images.heroBackground} 
           alt="Fundo Método Você no Topo do Google" 
           className="w-full h-full object-cover opacity-30 md:opacity-40"
           onError={(e) => {
-            // Fallback caso a imagem local não seja encontrada
-            e.currentTarget.src = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop";
+            // Fallback caso a imagem local não exista
+            (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop";
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/95 via-brand-dark/80 to-brand-dark"></div>
