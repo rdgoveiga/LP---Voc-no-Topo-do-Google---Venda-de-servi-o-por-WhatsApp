@@ -3,6 +3,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 // Import components
+import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { PainPoints } from './components/PainPoints';
 import { Chapters } from './components/Chapters';
@@ -11,9 +12,11 @@ import { Solution } from './components/Solution';
 import { Pricing } from './components/Pricing';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 const App = () => (
   <div className="bg-brand-dark min-h-screen text-slate-100 selection:bg-amber-500/30 selection:text-amber-200">
+    <Navbar />
     <Hero />
     <PainPoints />
     <Solution />
@@ -22,6 +25,7 @@ const App = () => (
     <Pricing />
     <FAQ />
     <Footer />
+    <FloatingWhatsApp />
   </div>
 );
 
