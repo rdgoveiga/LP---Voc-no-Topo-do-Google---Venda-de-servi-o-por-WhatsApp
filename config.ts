@@ -2,9 +2,7 @@
 /**
  * ARQUIVO DE CONFIGURAÇÃO CENTRAL
  * 
- * Atualizado para refletir os arquivos no seu GitHub:
- * 1. Imagem principal: 'header.jpg' (Já detectado no seu repositório)
- * 2. Imagem do autor: 'autor.jpg'
+ * Ajustado para evitar erros de construção de URL em ambientes restritos.
  */
 
 export const CONFIG = {
@@ -12,7 +10,8 @@ export const CONFIG = {
   author: {
     name: "Rodrigo Veiga",
     title: "Especialista em SEO Local",
-    image: "./autor.jpg", 
+    // Caminho relativo simples que o navegador resolve a partir da raiz
+    image: "autor.jpg", 
     bio: [
       "Olá, eu sou Rodrigo Veiga. Nos últimos 10 anos, ajudei centenas de pequenos e médios negócios a saírem do completo anonimato digital para se tornarem líderes em suas regiões.",
       "Percebi um padrão: a maioria dos empresários excelentes (como você) tem produtos incríveis, mas falham na hora de serem encontrados. Eles deixam dinheiro na mesa todos os dias para concorrentes que apenas 'sabem jogar o jogo'.",
@@ -23,8 +22,8 @@ export const CONFIG = {
 
   // Configurações Visuais
   images: {
-    // Ajustado de 'hero.jpg' para 'header.jpg' para coincidir com seu upload
-    heroBackground: "./header.jpg",
+    // Caminho relativo direto para o arquivo que está na raiz do seu repositório
+    heroBackground: "header.jpg",
   },
 
   // Links de Conversão

@@ -9,22 +9,28 @@ export const Hero = () => {
     window.open(CONFIG.links.whatsapp, "_blank");
   };
 
-  // Adicionamos um timestamp opcional para evitar cache agressivo do navegador se você trocar a imagem depois
-  const imageSrc = `${CONFIG.images.heroBackground}?v=${new Date().getTime() / 10000 | 0}`;
+  // Resolvemos o caminho da imagem de forma robusta
+  const getImageUrl = (path: string) => {
+    // Se o path já for uma URL completa, retorna ela
+    if (path.startsWith('http')) return path;
+    // Caso contrário, tenta carregar da raiz do projeto
+    return `./${path}`;
+  };
 
   return (
     <div className="relative min-h-[95vh] flex flex-col overflow-hidden">
-      {/* IMAGEM DE FUNDO - Agora apontando para header.jpg */}
+      {/* IMAGEM DE FUNDO */}
       <div className="absolute inset-0 z-0">
         <img 
-          src={CONFIG.images.heroBackground} 
+          src={getImageUrl(CONFIG.images.heroBackground)} 
           alt="Fundo Método Você no Topo do Google" 
           className="w-full h-full object-cover"
           loading="eager"
           onError={(e) => {
-            // Caso o arquivo header.jpg falhe por qualquer motivo técnico de path
             const target = e.target as HTMLImageElement;
+            // Evita loop infinito se o fallback também falhar
             if (!target.src.includes('unsplash')) {
+               console.log("Falha ao carregar imagem local, usando fallback...");
                target.src = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop";
             }
           }}
