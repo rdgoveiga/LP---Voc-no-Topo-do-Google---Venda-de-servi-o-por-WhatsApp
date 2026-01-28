@@ -2,8 +2,12 @@
 /**
  * ARQUIVO DE CONFIGURAÇÃO CENTRAL
  * 
- * Agora configurado para buscar imagens na pasta /images/
- * conforme a nova estrutura do projeto.
+ * Para alterar as imagens via GitHub:
+ * 1. Faça o upload das suas imagens para a pasta raiz do projeto.
+ * 2. Certifique-se de que os nomes dos arquivos sejam exatamente:
+ *    - header.jpg (para o topo/fundo principal)
+ *    - autor.jpg (para a sua foto na seção do autor)
+ * 3. IMPORTANTE: O nome deve ser minúsculo e a extensão .jpg
  */
 
 export const CONFIG = {
@@ -11,10 +15,8 @@ export const CONFIG = {
   author: {
     name: "Rodrigo Veiga",
     title: "Especialista em SEO Local",
-    // Novo caminho: aponta para /images/autor.jpg
-    image: "/images/autor.jpg", 
-    // Foto profissional de fallback (caso a sua não seja encontrada ou ainda não subiu)
-    fallbackImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop",
+    // Busca o arquivo autor.jpg na raiz do site
+    image: "autor.jpg", 
     bio: [
       "Olá, eu sou Rodrigo Veiga. Nos últimos 10 anos, ajudei centenas de pequenos e médios negócios a saírem do completo anonimato digital para se tornarem líderes em suas regiões.",
       "Percebi um padrão: a maioria dos empresários excelentes (como você) tem produtos incríveis, mas falham na hora de serem encontrados. Eles deixam dinheiro na mesa todos os dias para concorrentes que apenas 'sabem jogar o jogo'.",
@@ -25,10 +27,8 @@ export const CONFIG = {
 
   // Configurações Visuais
   images: {
-    // Novo caminho: aponta para /images/header.jpg
-    heroBackground: "/images/header.jpg",
-    // Fundo de alta qualidade (fallback)
-    heroFallback: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
+    // Busca o arquivo header.jpg na raiz do site
+    heroBackground: "header.jpg",
   },
 
   // Links de Conversão
