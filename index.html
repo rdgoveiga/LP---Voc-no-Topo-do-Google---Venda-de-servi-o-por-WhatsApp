@@ -128,13 +128,12 @@
         <div class="relative min-h-[90vh] md:min-h-screen flex flex-col overflow-hidden">
             <!-- Background Image -->
             <div class="absolute inset-0 z-0 bg-brand-dark">
-                <img 
-                    src="/images/hero.webp" 
-                    alt="Fundo Método Você no Topo do Google" 
-                    class="w-full h-full object-cover object-center md:object-right opacity-30 md:opacity-40 transition-opacity duration-700"
-                    onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop';"
-                />
-                <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/90 to-brand-dark/20 md:to-transparent"></div>
+                <!-- Alterado para DIV com background-image (bg-right) para garantir posicionamento do rosto -->
+                <div 
+                    class="w-full h-full bg-cover bg-right opacity-30 md:opacity-40 transition-opacity duration-700"
+                    style="background-image: url('/images/hero.webp');"
+                ></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/95 to-transparent"></div>
             </div>
 
             <!-- Light Effects -->
@@ -142,7 +141,8 @@
 
             <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-12 md:pb-16 flex flex-col justify-center flex-1 h-full">
                 
-                <div class="w-full lg:w-[60%] flex flex-col items-start text-left">
+                <!-- ZONA SEGURA: w-[65%] no mobile para não sobrepor o rosto à direita -->
+                <div class="w-[65%] sm:w-[60%] lg:w-[50%] flex flex-col items-start text-left">
                     <!-- BADGE -->
                     <div class="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 text-xs md:text-base font-extrabold mb-8 md:mb-12 badge-pulse shadow-[0_0_20px_rgba(245,158,11,0.1)] backdrop-blur-xl tracking-tight">
                         <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-amber-500 animate-[spin_4s_linear_infinite]"></i>
