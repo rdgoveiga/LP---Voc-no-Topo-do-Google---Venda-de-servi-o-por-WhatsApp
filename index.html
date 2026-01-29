@@ -111,12 +111,12 @@
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "vite": "https://esm.sh/vite@^7.3.1",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
@@ -131,52 +131,54 @@
                 <img 
                     src="/images/hero.webp" 
                     alt="Fundo Método Você no Topo do Google" 
-                    class="w-full h-full object-cover opacity-30 md:opacity-40 transition-opacity duration-700"
+                    class="w-full h-full object-cover object-center md:object-right opacity-30 md:opacity-40 transition-opacity duration-700"
                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop';"
                 />
-                <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/95 via-brand-dark/80 to-brand-dark"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/90 to-brand-dark/20 md:to-transparent"></div>
             </div>
 
             <!-- Light Effects -->
-            <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-amber-500/10 md:bg-amber-500/20 rounded-full blur-[80px] md:blur-[100px] z-0 pointer-events-none"></div>
+            <div class="absolute -top-40 -left-20 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-amber-500/10 md:bg-amber-500/20 rounded-full blur-[80px] md:blur-[100px] z-0 pointer-events-none"></div>
 
-            <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-12 md:pb-16 flex flex-col items-center text-center flex-1 justify-center">
+            <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-12 md:pb-16 flex flex-col justify-center flex-1 h-full">
                 
-                <!-- BADGE -->
-                <div class="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 text-xs md:text-base font-extrabold mb-8 md:mb-12 badge-pulse shadow-[0_0_20px_rgba(245,158,11,0.1)] backdrop-blur-xl tracking-tight">
-                    <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-amber-500 animate-[spin_4s_linear_infinite]"></i>
-                    <span class="uppercase tracking-widest leading-none">Serviço validado por + de 200 empresas</span>
-                </div>
-                
-                <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6 md:mb-8 text-white font-serif drop-shadow-2xl px-2">
-                    Saia do invisível para o <br class="hidden md:block" />
-                    <span class="text-gold-gradient">primeiro lugar no Google Local.</span>
-                </h1>
-                
-                <p class="text-base sm:text-xl md:text-2xl text-slate-300 mb-8 md:mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-md px-2">
-                    Pare de perder clientes para a concorrência. Através do <span class="text-amber-500 font-bold">Método Você no Topo do Google Local™</span> transformamos o seu perfil do Google em uma <span class="text-white font-bold">máquina de atração de clientes locais</span> e aumentando seu faturamento.
-                </p>
-
-                <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 justify-center w-full mb-10 px-4">
-                    <button onclick="window.openWhatsapp()" class="inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed bg-amber-500 hover:bg-amber-400 text-slate-900 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 px-10 py-5 text-xl w-full sm:w-auto cta-button-pulse text-base md:text-lg shadow-2xl">
-                        Quero Falar com um Especialista
-                        <i data-lucide="arrow-right" class="ml-2 w-5 h-5 md:w-6 md:h-6"></i>
-                    </button>
-                </div>
-
-                <!-- TRUST BAR -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 text-[10px] md:text-sm font-medium text-slate-300 bg-slate-900/40 py-3 md:py-3 px-6 md:px-8 rounded-2xl backdrop-blur-sm border border-slate-700/50 mb-6 md:mb-10 mx-4">
-                    <div class="flex items-center gap-2">
-                        <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                        </span>
-                        <span class="whitespace-nowrap">Atendimento 100% Personalizado</span>
+                <div class="w-full lg:w-[60%] flex flex-col items-start text-left">
+                    <!-- BADGE -->
+                    <div class="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 text-xs md:text-base font-extrabold mb-8 md:mb-12 badge-pulse shadow-[0_0_20px_rgba(245,158,11,0.1)] backdrop-blur-xl tracking-tight">
+                        <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-amber-500 animate-[spin_4s_linear_infinite]"></i>
+                        <span class="uppercase tracking-widest leading-none">Serviço validado por + de 200 empresas</span>
                     </div>
-                    <span class="text-slate-500 hidden sm:inline">•</span>
-                    <div class="flex items-center gap-2 text-amber-500 font-bold">
-                        <i data-lucide="check" class="w-3.5 h-3.5 md:w-4 md:h-4"></i>
-                        <span class="text-center">Resultados percebidos a curto prazo.</span>
+                    
+                    <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6 md:mb-8 text-white font-serif drop-shadow-2xl">
+                        Saia do invisível para o <br class="hidden md:block" />
+                        <span class="text-gold-gradient">primeiro lugar no Google Local.</span>
+                    </h1>
+                    
+                    <p class="text-base sm:text-xl md:text-2xl text-slate-300 mb-8 md:mb-10 max-w-2xl leading-relaxed drop-shadow-md">
+                        Pare de perder clientes para a concorrência. Através do <span class="text-amber-500 font-bold">Método Você no Topo do Google Local™</span> transformamos o seu perfil do Google em uma <span class="text-white font-bold">máquina de atração de clientes locais</span> e aumentando seu faturamento.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 justify-start w-full mb-10">
+                        <button onclick="window.openWhatsapp()" class="inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed bg-amber-500 hover:bg-amber-400 text-slate-900 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 px-10 py-5 text-xl w-full sm:w-auto cta-button-pulse text-base md:text-lg shadow-2xl">
+                            Quero Falar com um Especialista
+                            <i data-lucide="arrow-right" class="ml-2 w-5 h-5 md:w-6 md:h-6"></i>
+                        </button>
+                    </div>
+
+                    <!-- TRUST BAR -->
+                    <div class="flex flex-col sm:flex-row items-center justify-start gap-4 md:gap-6 text-[10px] md:text-sm font-medium text-slate-300 bg-slate-900/40 py-3 md:py-3 px-6 md:px-8 rounded-2xl backdrop-blur-sm border border-slate-700/50 mb-6 md:mb-10">
+                        <div class="flex items-center gap-2">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            <span class="whitespace-nowrap">Atendimento 100% Personalizado</span>
+                        </div>
+                        <span class="text-slate-500 hidden sm:inline">•</span>
+                        <div class="flex items-center gap-2 text-amber-500 font-bold">
+                            <i data-lucide="check" class="w-3.5 h-3.5 md:w-4 md:h-4"></i>
+                            <span class="text-center">Resultados percebidos a curto prazo.</span>
+                        </div>
                     </div>
                 </div>
             </div>
