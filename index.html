@@ -1,11 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Você no Topo do Google | Manual Completo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -39,6 +40,10 @@
         }
       }
     </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
       body {
         background-color: #0B1120;
@@ -78,36 +83,821 @@
         0%, 100% {
           box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
           border-color: rgba(245, 158, 11, 0.4);
+          transform: scale(1);
         }
         50% {
-          box-shadow: 0 0 12px 0 rgba(245, 158, 11, 0.25);
-          border-color: rgba(245, 158, 11, 0.8);
+          box-shadow: 0 0 20px 2px rgba(245, 158, 11, 0.4);
+          border-color: rgba(245, 158, 11, 1);
+          transform: scale(1.02);
         }
       }
 
       .badge-pulse {
-        animation: pulse-light 3s infinite ease-in-out;
+        animation: pulse-light 2.5s infinite ease-in-out;
       }
 
       .perspective-1000 {
         perspective: 1000px;
       }
+      
+      /* FAQ Animation Utilities */
+      .faq-content {
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
     "vite": "https://esm.sh/vite@^7.3.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
   }
 }
 </script>
 </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+<body>
+    <div class="bg-brand-dark min-h-screen text-slate-100 selection:bg-amber-500/30 selection:text-amber-200">
+        
+        <!-- HERO SECTION -->
+        <div class="relative min-h-[90vh] md:min-h-screen flex flex-col overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0 bg-brand-dark">
+                <img 
+                    src="/images/hero.webp" 
+                    alt="Fundo Método Você no Topo do Google" 
+                    class="w-full h-full object-cover opacity-30 md:opacity-40 transition-opacity duration-700"
+                    onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop';"
+                />
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/95 via-brand-dark/80 to-brand-dark"></div>
+            </div>
+
+            <!-- Light Effects -->
+            <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-amber-500/10 md:bg-amber-500/20 rounded-full blur-[80px] md:blur-[100px] z-0 pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-12 md:pb-16 flex flex-col items-center text-center flex-1 justify-center">
+                
+                <!-- BADGE -->
+                <div class="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 text-xs md:text-base font-extrabold mb-8 md:mb-12 badge-pulse shadow-[0_0_20px_rgba(245,158,11,0.1)] backdrop-blur-xl tracking-tight">
+                    <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-amber-500 animate-[spin_4s_linear_infinite]"></i>
+                    <span class="uppercase tracking-widest leading-none">Serviço validado por + de 200 empresas</span>
+                </div>
+                
+                <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6 md:mb-8 text-white font-serif drop-shadow-2xl px-2">
+                    Saia do invisível para o <br class="hidden md:block" />
+                    <span class="text-gold-gradient">primeiro lugar no Google Local.</span>
+                </h1>
+                
+                <p class="text-base sm:text-xl md:text-2xl text-slate-300 mb-8 md:mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-md px-2">
+                    Pare de perder clientes para a concorrência. Através do <span class="text-amber-500 font-bold">Método Você no Topo do Google Local™</span> transformamos o seu perfil do Google em uma <span class="text-white font-bold">máquina de atração de clientes locais</span> e aumentando seu faturamento.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 justify-center w-full mb-10 px-4">
+                    <button onclick="window.openWhatsapp()" class="inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed bg-amber-500 hover:bg-amber-400 text-slate-900 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 px-10 py-5 text-xl w-full sm:w-auto cta-button-pulse text-base md:text-lg shadow-2xl">
+                        Quero Falar com um Especialista
+                        <i data-lucide="arrow-right" class="ml-2 w-5 h-5 md:w-6 md:h-6"></i>
+                    </button>
+                </div>
+
+                <!-- TRUST BAR -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 text-[10px] md:text-sm font-medium text-slate-300 bg-slate-900/40 py-3 md:py-3 px-6 md:px-8 rounded-2xl backdrop-blur-sm border border-slate-700/50 mb-6 md:mb-10 mx-4">
+                    <div class="flex items-center gap-2">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span class="whitespace-nowrap">Atendimento 100% Personalizado</span>
+                    </div>
+                    <span class="text-slate-500 hidden sm:inline">•</span>
+                    <div class="flex items-center gap-2 text-amber-500 font-bold">
+                        <i data-lucide="check" class="w-3.5 h-3.5 md:w-4 md:h-4"></i>
+                        <span class="text-center">Resultados percebidos a curto prazo.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAIN POINTS SECTION -->
+        <section class="relative py-20 md:py-32 px-4 md:px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                    Você tem um serviço incrível,<br />
+                    <span class="text-amber-500">Mas um Marketing Invisível?</span>
+                </h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                    Não adianta ser o melhor da cidade se o cliente não consegue te encontrar. <span class="font-bold text-slate-200">Identifique o que está travando seu crescimento hoje:</span>
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <!-- Pain 1 -->
+                <div class="glass-card p-6 rounded-2xl hover:bg-slate-800/80 transition-colors duration-300 border-t-2 border-transparent hover:border-red-500/50 flex flex-col items-start h-full">
+                    <div class="bg-red-500/10 w-14 h-14 rounded-xl flex items-center justify-center mb-5 shrink-0">
+                        <i data-lucide="search-x" class="w-10 h-10 text-red-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">Invisível no Google</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">Seus concorrentes aparecem primeiro, mesmo sendo menos qualificados que você.</p>
+                </div>
+                <!-- Pain 2 -->
+                <div class="glass-card p-6 rounded-2xl hover:bg-slate-800/80 transition-colors duration-300 border-t-2 border-transparent hover:border-red-500/50 flex flex-col items-start h-full">
+                    <div class="bg-red-500/10 w-14 h-14 rounded-xl flex items-center justify-center mb-5 shrink-0">
+                        <i data-lucide="trending-down" class="w-10 h-10 text-red-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">Depende só de indicação</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">Sem previsibilidade de clientes. Um mês bom, outro ruim. Agenda instável.</p>
+                </div>
+                <!-- Pain 3 -->
+                <div class="glass-card p-6 rounded-2xl hover:bg-slate-800/80 transition-colors duration-300 border-t-2 border-transparent hover:border-red-500/50 flex flex-col items-start h-full">
+                    <div class="bg-red-500/10 w-14 h-14 rounded-xl flex items-center justify-center mb-5 shrink-0">
+                        <i data-lucide="wallet" class="w-10 h-10 text-red-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">Já perdeu dinheiro</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">Tentou agências, impulsionou posts, fez cursos rasos... e nada funcionou de verdade.</p>
+                </div>
+                <!-- Pain 4 -->
+                <div class="glass-card p-6 rounded-2xl hover:bg-slate-800/80 transition-colors duration-300 border-t-2 border-transparent hover:border-red-500/50 flex flex-col items-start h-full">
+                    <div class="bg-red-500/10 w-14 h-14 rounded-xl flex items-center justify-center mb-5 shrink-0">
+                        <i data-lucide="clock" class="w-10 h-10 text-red-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">Sem tempo para marketing</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">Você é bom no que faz, mas não foi treinado para vender. E o tempo é curto.</p>
+                </div>
+            </div>
+
+            <!-- Quote Section -->
+            <div class="max-w-3xl mx-auto bg-slate-800/50 rounded-2xl p-8 border border-slate-700 relative mt-12">
+                 <i data-lucide="quote" class="absolute top-6 left-6 w-10 h-10 text-slate-600 opacity-20"></i>
+                 <div class="relative z-10 text-center">
+                    <p class="text-xl md:text-2xl text-slate-200 font-serif italic leading-relaxed mb-6 px-4">
+                      "Vejo concorrente ruim lotado e não entendo por quê. O que estou fazendo de errado no Google?"
+                    </p>
+                    <div class="w-16 h-1 bg-amber-500 mx-auto rounded-full mb-4"></div>
+                    <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
+                      — Pensamento comum de profissionais competentes
+                    </p>
+                 </div>
+            </div>
+        </section>
+
+        <!-- SOLUTION SECTION -->
+        <div class="bg-slate-900 border-y border-slate-800 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-64 md:w-96 h-64 md:h-96 bg-amber-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+            
+            <section class="py-20 md:py-32 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden">
+                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 mb-16 md:mb-24">
+                    <div class="w-full lg:w-1/2 flex flex-col gap-4 md:gap-6 order-2 lg:order-1">
+                        <!-- Stat 1 -->
+                        <div class="glass-card p-5 md:p-8 rounded-2xl border border-slate-700/50 transition-all active:scale-[0.98] md:hover:scale-105">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <span class="text-3xl md:text-5xl font-bold text-amber-500 leading-none">126%</span>
+                                <p class="text-slate-300 text-sm md:text-base leading-tight">mais tráfego para perfis otimizados</p>
+                            </div>
+                        </div>
+                        <!-- Stat 2 -->
+                        <div class="glass-card p-5 md:p-8 rounded-2xl border border-slate-700/50 transition-all active:scale-[0.98] md:hover:scale-105">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <span class="text-3xl md:text-5xl font-bold text-amber-500 leading-none">93%</span>
+                                <p class="text-slate-300 text-sm md:text-base leading-tight">mais conversões no top 3 do Google</p>
+                            </div>
+                        </div>
+                        <!-- Stat 3 -->
+                        <div class="glass-card p-5 md:p-8 rounded-2xl border border-slate-700/50 transition-all active:scale-[0.98] md:hover:scale-105">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <span class="text-3xl md:text-5xl font-bold text-amber-500 leading-none">76%</span>
+                                <p class="text-slate-300 text-sm md:text-base leading-tight">visitam a loja em 24h após buscar</p>
+                            </div>
+                        </div>
+
+                        <p class="text-slate-500 text-[10px] italic mt-2 text-center lg:text-left opacity-70">
+                            *Resultados médios baseados em SEO local.
+                        </p>
+
+                        <div class="mt-8 md:mt-10 p-6 md:p-8 rounded-2xl bg-slate-800/40 border border-slate-700/50 relative group">
+                            <h3 class="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 leading-tight">Por que algumas empresas dominam o Google Local?</h3>
+                            <div class="space-y-4">
+                                <p class="text-slate-400 text-sm leading-relaxed">Não é sorte. É o método aplicado da forma correta.</p>
+                                <div class="space-y-3">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div>
+                                        <span class="text-slate-300 text-sm leading-tight">Estrutura otimizada para o algoritmo</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div>
+                                        <span class="text-slate-300 text-sm leading-tight">Autoridade local construída tecnicamente</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div>
+                                        <span class="text-slate-300 text-sm leading-tight">Atualização estratégica e constante</span>
+                                    </div>
+                                </div>
+                                <p class="text-amber-500 font-bold text-sm pt-4 border-t border-slate-700/50 flex items-center gap-2">
+                                    <span>👉</span> O Método cuida de cada um desses pontos para você.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-amber-500/50 text-amber-500 text-[10px] md:text-sm font-bold mb-4 md:mb-6 badge-pulse">
+                            <i data-lucide="sparkles" class="w-3 h-3 md:w-4 md:h-4"></i>
+                            <span class="uppercase tracking-wider">Nossa Entrega</span>
+                        </div>
+
+                        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 font-serif leading-tight">
+                            O <span class="text-amber-500">Método Você no Topo do Google Local™</span>
+                        </h2>
+                        
+                        <p class="text-slate-200 text-lg md:text-xl font-medium mb-6 leading-relaxed">Com nossa Gestão Estratégica, garantimos:</p>
+                        
+                        <ul class="space-y-4 md:space-y-6 mb-10">
+                            <li class="flex items-start gap-3 text-slate-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 md:w-6 md:h-6 text-amber-500 shrink-0 mt-0.5"></i>
+                                <span class="text-base md:text-lg leading-snug">Ativação completa dos fatores de rankeamento</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 md:w-6 md:h-6 text-amber-500 shrink-0 mt-0.5"></i>
+                                <span class="text-base md:text-lg leading-snug">Otimização de imagens para conversão máxima</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 md:w-6 md:h-6 text-amber-500 shrink-0 mt-0.5"></i>
+                                <span class="text-base md:text-lg leading-snug">Construção técnica de autoridade local</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 md:w-6 md:h-6 text-amber-500 shrink-0 mt-0.5"></i>
+                                <span class="text-base md:text-lg leading-snug">Gestão de relevância e atualizações constantes</span>
+                            </li>
+                        </ul>
+
+                        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5 md:p-6 relative shadow-lg">
+                            <div class="flex gap-4">
+                                <i data-lucide="lightbulb" class="w-5 h-5 md:w-6 md:h-6 text-amber-400 shrink-0 mt-1"></i>
+                                <p class="text-slate-300 text-sm md:text-base italic leading-relaxed">
+                                    "Nossa estratégia foi construída e validada através de um método prático para colocar o seu negócio no radar de quem realmente quer comprar na sua região."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800 pt-16 md:pt-20">
+                    <div class="text-center mb-10 md:mb-12">
+                        <h3 class="text-xl md:text-3xl font-bold text-white uppercase tracking-wider">Pilares do Método:</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                        <!-- Pilar 1 -->
+                        <div class="glass-card p-6 md:p-8 rounded-2xl hover:bg-slate-800/80 transition-all duration-300">
+                            <div class="bg-amber-500/10 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-5 md:mb-6">
+                                <i data-lucide="rocket" class="w-8 h-8 md:w-10 md:h-10 text-amber-500"></i>
+                            </div>
+                            <h4 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Rankeamento Veloz</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Aceleramos o processo para sua empresa aparecer agora.</p>
+                        </div>
+                        <!-- Pilar 2 -->
+                        <div class="glass-card p-6 md:p-8 rounded-2xl hover:bg-slate-800/80 transition-all duration-300">
+                            <div class="bg-amber-500/10 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-5 md:mb-6">
+                                <i data-lucide="lock-open" class="w-8 h-8 md:w-10 md:h-10 text-amber-500"></i>
+                            </div>
+                            <h4 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Chaves de Confiança</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Ajustamos os gatilhos que fazem o cliente confiar e escolher você.</p>
+                        </div>
+                        <!-- Pilar 3 -->
+                        <div class="glass-card p-6 md:p-8 rounded-2xl hover:bg-slate-800/80 transition-all duration-300">
+                            <div class="bg-amber-500/10 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-5 md:mb-6">
+                                <i data-lucide="circle-dollar-sign" class="w-8 h-8 md:w-10 md:h-10 text-amber-500"></i>
+                            </div>
+                            <h4 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Foco em Vendas</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Nosso objetivo é levar clientes reais até o seu WhatsApp.</p>
+                        </div>
+                        <!-- Pilar 4 -->
+                        <div class="glass-card p-6 md:p-8 rounded-2xl hover:bg-slate-800/80 transition-all duration-300">
+                            <div class="bg-amber-500/10 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-5 md:mb-6">
+                                <i data-lucide="map-pinned" class="w-8 h-8 md:w-10 md:h-10 text-amber-500"></i>
+                            </div>
+                            <h4 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Cerco Territorial</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Blindamos o seu bairro para sua empresa ser a autoridade máxima.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CHAPTERS SECTION -->
+        <div class="relative">
+            <!-- ETAPA 1: DIAGNÓSTICO -->
+            <section class="py-20 md:py-32 px-4 md:px-8 max-w-7xl mx-auto pb-10 overflow-hidden">
+                <div class="max-w-6xl mx-auto px-4">
+                    <div class="text-center mb-10 md:mb-16">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-6">
+                            <i data-lucide="history" class="w-3.5 h-3.5 md:w-4 md:h-4"></i>
+                            <span>Diagnóstico de Posicionamento</span>
+                        </div>
+                        <h2 class="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.2]">
+                            Onde sua empresa está <br class="hidden md:block" />
+                            <span class="text-amber-500">travada hoje?</span>
+                        </h2>
+                        <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg px-2">
+                            A diferença entre ser ignorado e ser a escolha número #1 é utilizar as <span class="text-white font-semibold">estratégias certas</span>.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch relative rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-slate-800 shadow-2xl">
+                        <!-- O LADO DA DOR: O PERFIL QUEBRADO -->
+                        <div class="bg-slate-950 p-6 md:p-12 relative border-b lg:border-b-0 border-slate-800">
+                            <div class="flex items-center gap-3 mb-8 md:mb-10 pb-6 border-b border-red-500/20">
+                                <div class="bg-red-500/10 p-2 rounded-lg shrink-0">
+                                    <i data-lucide="trending-down" class="w-5 h-5 md:w-6 md:h-6 text-red-500"></i>
+                                </div>
+                                <h4 class="text-lg md:text-2xl font-bold text-slate-400">O Ciclo da Invisibilidade</h4>
+                            </div>
+
+                            <div class="space-y-6 md:space-y-8">
+                                <div class="flex gap-4 md:gap-5 items-start">
+                                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800 shrink-0">
+                                        <i data-lucide="map-pin-off" class="w-5 h-5 md:w-6 md:h-6 text-slate-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-base md:text-lg mb-1">Configuração Incorreta</p>
+                                        <p class="text-slate-500 text-xs md:text-sm leading-relaxed">
+                                            Perfil com dados vagos que fazem o Google te esconder do mapa.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-4 md:gap-5 items-start">
+                                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800 shrink-0">
+                                        <i data-lucide="search" class="w-5 h-5 md:w-6 md:h-6 text-slate-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-base md:text-lg mb-1">Marketing de Esperança</p>
+                                        <p class="text-slate-500 text-xs md:text-sm leading-relaxed">
+                                            Postar sem estratégia de palavras-chave estruturadas.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-4 md:gap-5 items-start">
+                                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800 shrink-0">
+                                        <i data-lucide="ban" class="w-5 h-5 md:w-6 md:h-6 text-slate-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-base md:text-lg mb-1">Abandono Digital</p>
+                                        <p class="text-slate-500 text-xs md:text-sm leading-relaxed">
+                                            Um perfil que não gera confiança. O cliente <span class="text-white font-bold">escolhe o concorrente</span> e você nem imagina por quê.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 md:mt-12 flex items-center gap-3 bg-red-500/5 p-4 rounded-xl border border-red-500/10">
+                                <i data-lucide="alert-circle" class="w-4 h-4 md:w-5 md:h-5 text-red-500 shrink-0"></i>
+                                <p class="text-red-400/80 text-[10px] md:text-sm font-medium">Você está perdendo faturamento real hoje.</p>
+                            </div>
+                        </div>
+
+                        <!-- O LADO DA SOLUÇÃO: MÉTODO VOCÊ NO TOPO -->
+                        <div class="bg-slate-900 p-6 md:p-12 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                            
+                            <div class="flex items-center gap-3 mb-8 md:mb-10 pb-6 border-b border-amber-500/20 relative z-10">
+                                <div class="bg-amber-500 p-2 rounded-lg shrink-0">
+                                    <i data-lucide="trophy" class="w-5 h-5 md:w-6 md:h-6 text-slate-900"></i>
+                                </div>
+                                <h4 class="text-lg md:text-2xl font-bold text-white">Nossa Solução Estratégica</h4>
+                            </div>
+
+                            <div class="space-y-6 md:space-y-8 relative z-10">
+                                <div class="flex gap-4 md:gap-5 items-start">
+                                    <div class="bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20 shrink-0">
+                                        <i data-lucide="shield-check" class="w-5 h-5 md:w-6 md:h-6 text-amber-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-base md:text-lg mb-1">Arquitetura de Domínio</p>
+                                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
+                                            Configuração que te coloca <span class="text-amber-500 font-bold">nas 3 primeiras posições</span>.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-4 md:gap-5 items-start">
+                                    <div class="bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20 shrink-0">
+                                        <i data-lucide="mouse-pointer-click" class="w-5 h-5 md:w-6 md:h-6 text-amber-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-base md:text-lg mb-1">Ímã de Cliques</p>
+                                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
+                                            O cliente bate o olho e <span class="text-amber-500 font-bold">não tem outra escolha</span> a não ser você.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-4 md:gap-5 items-start">
+                                    <div class="bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20 shrink-0">
+                                        <i data-lucide="bar-chart-3" class="w-5 h-5 md:w-6 md:h-6 text-amber-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-base md:text-lg mb-1">Escala de Faturamento</p>
+                                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
+                                            Trazendo pessoas que já estão com o cartão na mão prontas para comprar.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 md:mt-12">
+                                <div class="bg-gradient-to-r from-amber-500/20 to-transparent p-[1px] rounded-xl">
+                                    <div class="bg-slate-900/80 p-3 md:p-4 rounded-xl flex items-center gap-3">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 md:w-5 md:h-5 text-amber-500 shrink-0"></i>
+                                        <p class="text-amber-500 font-bold text-[10px] md:text-sm tracking-tight uppercase">Resultados após a implementação.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-brand-dark border-4 border-slate-800 rounded-full items-center justify-center z-20 shadow-2xl">
+                            <span class="text-slate-600 font-black text-xl italic">VS</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex justify-center py-8 md:py-12">
+                <i data-lucide="arrow-down" class="w-6 h-6 md:w-8 md:h-8 text-slate-800 animate-bounce"></i>
+            </div>
+
+            <!-- SEÇÃO: A NOVA REALIDADE DO NEGÓCIO -->
+            <section class="py-20 md:py-32 px-4 md:px-8 max-w-7xl mx-auto pt-10 md:pt-20 pb-20 md:pb-32 overflow-hidden">
+                <div class="text-center mb-12 md:mb-20 relative px-4">
+                    <h2 class="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-serif leading-tight">
+                        A Nova Realidade do <br class="hidden md:block" />
+                        <span class="text-amber-500">Seu Negócio no Google</span>
+                    </h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-xl leading-relaxed">
+                        Após nossa intervenção, seu perfil passa a funcionar como um <span class="text-white font-bold">ativo de vendas 24h</span>.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto mb-16 md:mb-20 px-4">
+                    <!-- Card 1 -->
+                    <div class="group p-6 md:p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition-all duration-300">
+                        <div class="mb-5 bg-amber-500/10 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="users" class="w-7 h-7 md:w-8 md:h-8 text-amber-500"></i>
+                        </div>
+                        <h4 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Clientes Decididos</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Receba cliques de pessoas que já pesquisaram o que você vende.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="group p-6 md:p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition-all duration-300">
+                        <div class="mb-5 bg-amber-500/10 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="crown" class="w-7 h-7 md:w-8 md:h-8 text-amber-500"></i>
+                        </div>
+                        <h4 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Empresa Referência</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Sua marca é percebida como a autoridade máxima do seu bairro.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="group p-6 md:p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition-all duration-300">
+                        <div class="mb-5 bg-amber-500/10 w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="zap" class="w-7 h-7 md:w-8 md:h-8 text-amber-500"></i>
+                        </div>
+                        <h4 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Domínio Absoluto</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Enquanto a concorrência briga, você domina o Top 3 absoluto.</p>
+                    </div>
+                </div>
+
+                <!-- FAIXA DE IMPACTO -->
+                <div class="max-w-4xl mx-auto mb-20 md:mb-32 px-4">
+                    <div class="bg-gradient-to-r from-amber-600 to-amber-400 p-[1px] rounded-2xl md:rounded-3xl shadow-xl">
+                        <div class="bg-slate-950 px-6 py-8 md:px-8 md:py-10 rounded-[calc(1rem+1px)] md:rounded-[calc(1.5rem+1px)] text-center">
+                            <p class="text-white text-lg md:text-3xl font-black uppercase tracking-tight leading-tight">
+                                👉 Você para de disputar <span class="text-amber-500">preço</span> e passa a disputar <span class="text-amber-500 italic underline decoration-amber-500/30 underline-offset-4">autoridade</span>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUALIFICAÇÃO -->
+                <div class="max-w-6xl mx-auto px-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 items-center bg-slate-900/50 rounded-3xl md:rounded-[3rem] border border-slate-800 p-6 md:p-16 backdrop-blur-sm">
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950 border border-slate-800 text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-6 md:mb-8">
+                                <i data-lucide="target" class="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-500"></i>
+                                <span>Perfil de Parceria</span>
+                            </div>
+                            <h3 class="text-2xl md:text-4xl font-bold text-white mb-6 md:mb-8 font-serif leading-tight">
+                                O <span class="text-amber-500 font-bold">Método Você no Topo™</span> é <br class="hidden md:block" />
+                                <span class="text-white italic">o que você precisa se...</span>
+                            </h3>
+                            
+                            <div class="space-y-4 md:space-y-5">
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                                        <i data-lucide="check-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-500"></i>
+                                    </div>
+                                    <span class="text-slate-300 text-base md:text-lg font-medium leading-tight">Quer estar entre os primeiros resultados</span>
+                                </div>
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                                        <i data-lucide="check-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-500"></i>
+                                    </div>
+                                    <span class="text-slate-300 text-base md:text-lg font-medium leading-tight">Seu negócio atende uma região específica</span>
+                                </div>
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                                        <i data-lucide="check-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-500"></i>
+                                    </div>
+                                    <span class="text-slate-300 text-base md:text-lg font-medium leading-tight">Você quer previsibilidade nas vendas</span>
+                                </div>
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                                        <i data-lucide="check-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-500"></i>
+                                    </div>
+                                    <span class="text-slate-300 text-base md:text-lg font-medium leading-tight">Prefere especialistas a tentativa e erro</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div class="bg-slate-950 rounded-2xl md:rounded-3xl p-6 md:p-8 border border-slate-800 shadow-xl overflow-hidden">
+                                <h4 class="text-red-500 font-bold uppercase tracking-widest text-[10px] md:text-xs mb-4 md:mb-6 flex items-center gap-2">
+                                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                                    Critérios de Seleção
+                                </h4>
+                                <p class="text-slate-200 text-lg md:text-xl font-bold mb-4 md:mb-6 leading-tight">
+                                    Não atendemos negócios que não prezam pela qualidade extrema.
+                                </p>
+                                <p class="text-slate-400 text-xs md:text-sm leading-relaxed mb-6 italic opacity-80">
+                                    "Nossa reputação é construída sobre o sucesso. Por isso, selecionamos empresas com entrega real."
+                                </p>
+                                <div class="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
+                                    <div class="h-full w-2/3 bg-amber-500/50"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- AUTHOR SECTION -->
+        <div class="bg-slate-800/30">
+            <section class="py-20 md:py-32 px-4 md:px-8 max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-full md:w-1/3">
+                        <div class="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-slate-700 grayscale hover:grayscale-0 transition-all duration-700 group">
+                            <img 
+                                src="/images/autor.webp" 
+                                alt="Rodrigo Veiga" 
+                                class="w-full h-full object-cover"
+                                onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop';"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-2/3">
+                        <h3 class="text-amber-500 font-bold uppercase tracking-widest mb-2">Quem será seu mentor</h3>
+                        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 font-serif">Rodrigo Veiga</h2>
+                        <p class="text-slate-400 text-lg mb-8 italic">Especialista em SEO Local</p>
+                        
+                        <div class="space-y-6 text-slate-300 leading-relaxed mb-10">
+                            <p>Olá, eu sou Rodrigo Veiga. Nos últimos 10 anos, ajudei centenas de pequenos e médios negócios a saírem do completo anonimato digital para se tornarem líderes em suas regiões.</p>
+                            <p>Percebi um padrão: a maioria dos empresários excelentes (como você) tem produtos incríveis, mas falham na hora de serem encontrados. Eles deixam dinheiro na mesa todos os dias para concorrentes que apenas 'sabem jogar o jogo'.</p>
+                            <p>Desenvolvi o Método Você no Topo do Google™ para ser o caminho definitivo que eu gostaria de ter tido quando comecei. Sem jargões técnicos complicados, sem promessas vazias. Apenas estratégia pura, aplicada e validada.</p>
+                        </div>
+
+                        <div class="relative pl-6 border-l-4 border-amber-500 py-2">
+                            <i data-lucide="quote" class="absolute -top-2 left-4 w-8 h-8 text-amber-500/20 rotate-180"></i>
+                            <p class="text-white font-serif text-xl italic relative z-10">
+                                "Minha missão é democratizar o acesso ao topo das pesquisas. Seu negócio merece ser visto."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PRICING SECTION -->
+        <section id="pricing" class="py-12 md:py-24 px-4 overflow-visible py-20 md:py-32 px-4 md:px-8 max-w-7xl mx-auto">
+            <div class="max-w-4xl mx-auto">
+                <!-- Urgency Timer Bar -->
+                <div class="w-full mb-10 md:mb-12">
+                    <div class="bg-[#1a0a0a] border border-red-900/40 py-3 md:py-4 px-4 md:px-6 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 backdrop-blur-md shadow-2xl">
+                        <div class="flex items-center gap-2 text-center">
+                            <div class="relative flex h-2.5 w-2.5 shrink-0">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
+                            </div>
+                            <p class="text-red-600 text-[10px] md:text-sm font-black uppercase tracking-widest leading-none">
+                                Vagas limitadas para este mês:
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2 md:gap-3 bg-red-600/10 px-4 py-1.5 md:py-2 rounded-xl border border-red-600/20">
+                            <i data-lucide="clock" class="w-4 h-4 md:w-5 md:h-5 text-red-600"></i>
+                            <span id="timer-count" class="text-red-600 font-black text-xl md:text-3xl font-mono tabular-nums leading-none">
+                                07:00
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Card -->
+                <div class="relative bg-[#0a1120] rounded-[2rem] md:rounded-[3rem] border border-slate-800 p-6 sm:p-10 md:p-20 shadow-[0_0_80px_rgba(0,0,0,0.6)] overflow-visible flex flex-col items-center text-center">
+                    
+                    <!-- Decorative Glow -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-amber-500/5 blur-[80px] md:blur-[120px] rounded-full pointer-events-none"></div>
+
+                    <!-- Badge -->
+                    <div class="absolute -top-5 md:-top-6 left-1/2 -translate-x-1/2 z-20 whitespace-nowrap">
+                        <span class="bg-[#f59e0b] text-slate-900 font-black px-6 md:px-12 py-2.5 md:py-4 rounded-full text-[10px] md:text-sm uppercase tracking-[0.2em] shadow-lg">
+                            Atendimento Exclusivo
+                        </span>
+                    </div>
+
+                    <!-- Product Title -->
+                    <h2 class="text-2xl md:text-5xl lg:text-6xl font-bold text-white mt-4 mb-6 md:mb-10 tracking-tight leading-[1.2] max-w-3xl relative z-10">
+                        Conheça agora o <span class="text-amber-500">Método Você no Topo do Google™</span>
+                    </h2>
+
+                    <!-- Call to Action description -->
+                    <div class="mb-10 md:mb-14 relative z-10">
+                        <p class="text-slate-300 text-base md:text-2xl font-medium mb-4 max-w-2xl mx-auto leading-relaxed">
+                            O seu negócio merece destaque e <span class="text-white font-bold underline decoration-amber-500/30 underline-offset-4">clientes todos os dias</span>. 
+                        </p>
+                        <p class="text-slate-400 text-sm md:text-xl max-w-xl mx-auto leading-relaxed">
+                            Clique no botão abaixo para receber um <span class="text-amber-500 font-bold">diagnóstico gratuito</span> e orçamento.
+                        </p>
+                    </div>
+
+                    <!-- Centered CTA Button -->
+                    <div class="w-full max-w-lg relative z-10 mb-10 md:mb-16">
+                        <button 
+                            onclick="window.openWhatsapp()" 
+                            class="w-full bg-[#f59e0b] hover:bg-amber-400 text-slate-900 shadow-xl text-lg md:text-2xl font-black py-6 md:py-8 rounded-2xl md:rounded-[2rem] group transform transition-all active:scale-[0.98] flex items-center justify-center border-b-4 border-amber-700/50"
+                        >
+                            Falar no WhatsApp
+                            <i data-lucide="arrow-right" class="ml-3 md:ml-4 w-6 h-6 md:w-7 md:h-7"></i>
+                        </button>
+                        <p class="text-slate-500 text-[10px] md:text-sm mt-5 italic font-medium tracking-wide leading-tight">
+                            *Análise técnica de viabilidade inclusa sem compromisso.
+                        </p>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-y-5 gap-x-8 md:gap-x-12 text-[10px] md:text-sm text-slate-400 font-bold uppercase tracking-[0.15em] relative z-10 w-full pt-8 md:pt-10 border-t border-slate-800/50">
+                        <div class="flex items-center justify-center gap-2">
+                            <i data-lucide="shield-check" class="w-5 h-5 md:w-6 md:h-6 text-[#f59e0b] shrink-0"></i>
+                            <span>Garantia de Entrega</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <i data-lucide="zap" class="w-5 h-5 md:w-6 md:h-6 text-[#f59e0b] shrink-0"></i>
+                            <span>Início imediato</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <i data-lucide="shield" class="w-5 h-5 md:w-6 md:h-6 text-[#f59e0b] shrink-0"></i>
+                            <span>Suporte Dedicado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ SECTION -->
+        <section class="pb-32 px-4 py-20 md:py-32 max-w-7xl mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold text-white text-center mb-12 leading-tight">
+                Dúvidas sobre o <span class="text-amber-500">Método Você no Topo do Google™</span>
+            </h2>
+            <div class="max-w-2xl mx-auto space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="border border-slate-800 rounded-lg bg-slate-900/50 overflow-hidden">
+                    <button onclick="toggleFAQ(0)" class="w-full flex items-center justify-between p-4 md:p-5 text-left text-slate-200 hover:bg-slate-800 transition-colors">
+                        <span class="font-medium text-sm md:text-base pr-4">Como funciona o Método Você no Topo do Google™?</span>
+                        <i id="faq-plus-0" data-lucide="plus" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                        <i id="faq-minus-0" data-lucide="minus" class="w-5 h-5 text-amber-500 shrink-0 hidden"></i>
+                    </button>
+                    <div id="faq-content-0" class="faq-content">
+                        <div class="p-4 md:p-5 pt-0 text-slate-400 text-xs md:text-sm leading-relaxed">
+                            Nós realizamos um diagnóstico completo do seu perfil atual, aplicamos todas as otimizações técnicas necessárias e mantemos uma rotina estratégica para garantir que você suba e permaneça no topo das buscas locais.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="border border-slate-800 rounded-lg bg-slate-900/50 overflow-hidden">
+                    <button onclick="toggleFAQ(1)" class="w-full flex items-center justify-between p-4 md:p-5 text-left text-slate-200 hover:bg-slate-800 transition-colors">
+                        <span class="font-medium text-sm md:text-base pr-4">Em quanto tempo vejo resultados?</span>
+                        <i id="faq-plus-1" data-lucide="plus" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                        <i id="faq-minus-1" data-lucide="minus" class="w-5 h-5 text-amber-500 shrink-0 hidden"></i>
+                    </button>
+                    <div id="faq-content-1" class="faq-content">
+                        <div class="p-4 md:p-5 pt-0 text-slate-400 text-xs md:text-sm leading-relaxed">
+                            O Google costuma processar mudanças em poucos dias, mas a consolidação no topo varia de 15 a 45 dias, dependendo da concorrência da sua região.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="border border-slate-800 rounded-lg bg-slate-900/50 overflow-hidden">
+                    <button onclick="toggleFAQ(2)" class="w-full flex items-center justify-between p-4 md:p-5 text-left text-slate-200 hover:bg-slate-800 transition-colors">
+                        <span class="font-medium text-sm md:text-base pr-4">Eu preciso fazer alguma coisa?</span>
+                        <i id="faq-plus-2" data-lucide="plus" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                        <i id="faq-minus-2" data-lucide="minus" class="w-5 h-5 text-amber-500 shrink-0 hidden"></i>
+                    </button>
+                    <div id="faq-content-2" class="faq-content">
+                        <div class="p-4 md:p-5 pt-0 text-slate-400 text-xs md:text-sm leading-relaxed">
+                            Nosso serviço é 'mão na massa'. Nós cuidamos da parte técnica. Você só precisará nos fornecer algumas fotos e informações básicas do seu negócio quando solicitado.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 4 -->
+                <div class="border border-slate-800 rounded-lg bg-slate-900/50 overflow-hidden">
+                    <button onclick="toggleFAQ(3)" class="w-full flex items-center justify-between p-4 md:p-5 text-left text-slate-200 hover:bg-slate-800 transition-colors">
+                        <span class="font-medium text-sm md:text-base pr-4">Como iniciamos o trabalho?</span>
+                        <i id="faq-plus-3" data-lucide="plus" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                        <i id="faq-minus-3" data-lucide="minus" class="w-5 h-5 text-amber-500 shrink-0 hidden"></i>
+                    </button>
+                    <div id="faq-content-3" class="faq-content">
+                        <div class="p-4 md:p-5 pt-0 text-slate-400 text-xs md:text-sm leading-relaxed">
+                            Após o primeiro contato via WhatsApp e fechamento, enviamos um formulário de diagnóstico. Assim que preenchido, nossa equipe inicia o processo de otimização do Método imediatamente.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER SECTION -->
+        <footer class="bg-slate-950 py-12 border-t border-slate-900">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <div class="mb-6">
+                    <span class="text-xl md:text-2xl font-serif font-bold text-white">
+                        Método Você no Topo do <span class="text-amber-500">Google Local™</span>
+                    </span>
+                </div>
+                <p class="text-slate-500 text-sm mb-8">
+                    © 2021 Rodrigo Veiga. Todos os direitos reservados.
+                </p>
+                <div class="flex justify-center gap-6 text-xs text-slate-600">
+                    <a href="#" class="hover:text-slate-400">Termos de Uso</a>
+                    <a href="#" class="hover:text-slate-400">Política de Privacidade</a>
+                    <a href="#" class="hover:text-slate-400">Contato</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Inicialização de ícones e lógica interativa
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inicializar ícones Lucide
+            lucide.createIcons();
+
+            // WhatsApp Link Logic
+            window.openWhatsapp = function() {
+                window.open("https://wa.me/5521985899548?text=Olá! Gostaria de saber mais sobre o Método Você no Topo do Google.", "_blank");
+            }
+
+            // Timer Logic
+            let timeLeft = 420; // 7 minutes
+            const timerEl = document.getElementById('timer-count');
+            
+            if (timerEl) {
+                const timer = setInterval(() => {
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        return;
+                    }
+                    timeLeft--;
+                    const mins = Math.floor(timeLeft / 60);
+                    const secs = timeLeft % 60;
+                    timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            // FAQ Logic
+            window.toggleFAQ = function(index) {
+                const content = document.getElementById('faq-content-' + index);
+                const iconPlus = document.getElementById('faq-plus-' + index);
+                const iconMinus = document.getElementById('faq-minus-' + index);
+                
+                // Toggle
+                if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                    // Close
+                    content.style.maxHeight = '0px';
+                    content.style.opacity = '0';
+                    iconPlus.classList.remove('hidden');
+                    iconMinus.classList.add('hidden');
+                } else {
+                    // Open
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    content.style.opacity = '1';
+                    iconPlus.classList.add('hidden');
+                    iconMinus.classList.remove('hidden');
+                }
+            }
+        });
+    </script>
+</body>
 </html>
