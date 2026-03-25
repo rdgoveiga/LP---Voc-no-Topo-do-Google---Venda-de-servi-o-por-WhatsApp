@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CONFIG } from '../config';
 import { metaTrack, getClientIp } from '../lib/metaTracking';
 import { getUTMs } from '../lib/utmTracking';
+import { getABVersion } from '../lib/abTest';
 
 interface DiagnosisModalProps {
   isOpen: boolean;
@@ -45,11 +46,13 @@ export const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ isOpen, onClose 
 
     try {
       const utmData = getUTMs();
+      const abVersion = getABVersion();
       const eventId = `lead-${Date.now()}`;
 
       // 1. Enviar para o Google Sheets (Webhook)
       const webhookData = new URLSearchParams({
         ...utmData,
+        ab_version: abVersion,
         name: formData.name,
         business: formData.businessName,
         phone: formData.whatsapp,
