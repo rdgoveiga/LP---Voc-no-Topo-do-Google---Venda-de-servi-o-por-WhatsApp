@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Section } from './ui/Section';
-import { Image as ImageIcon, MapPin, CheckCircle2, XCircle, ArrowRight, HelpCircle } from 'lucide-react';
+import { Image as ImageIcon, MapPin, CheckCircle2, XCircle, ArrowRight, HelpCircle, ChevronLeft, ChevronRight, Smartphone } from 'lucide-react';
 import { ABVersion } from '../lib/abTest';
 
 interface ResultsProps {
@@ -12,6 +12,8 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
   const cases = [
     {
       niche: "Nutricionista",
+      tag: "Saúde",
+      tagColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
       growth: "+214%",
       metric: "Mensagens/Mês",
       image: "https://lpgmn-assets.vercel.app/images/ranking-na-cidade_nutri.webp",
@@ -23,6 +25,8 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
     },
     {
       niche: "Oficina Mecânica",
+      tag: "Automotivo",
+      tagColor: "bg-blue-500/20 text-blue-400 border-blue-500/30",
       growth: "+180%",
       metric: "Solicitações de Rota",
       image: "https://lpgmn-assets.vercel.app/images/solicitacao-de-rotas.webp",
@@ -34,6 +38,8 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
     },
     {
       niche: "Delivery de Pizza",
+      tag: "Gastronomia",
+      tagColor: "bg-amber-500/20 text-amber-400 border-amber-500/30",
       growth: "+350%",
       metric: "Visualizações no Maps",
       image: "https://lpgmn-assets.vercel.app/images/print-pizzaria.webp",
@@ -44,6 +50,55 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
       details: ["Explosão de pedidos", "Visibilidade noturna", "Desejo Imediato"]
     }
   ];
+
+  // Carousel state
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const goTo = useCallback((index: number) => {
+    setActiveIndex(index);
+  }, []);
+
+  const goNext = useCallback(() => {
+    setActiveIndex(prev => (prev + 1) % cases.length);
+  }, [cases.length]);
+
+  const goPrev = useCallback(() => {
+    setActiveIndex(prev => (prev - 1 + cases.length) % cases.length);
+  }, [cases.length]);
+
+  // Auto-play
+  useEffect(() => {
+    if (isAutoPlaying) {
+      intervalRef.current = setInterval(goNext, 4500);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isAutoPlaying, goNext]);
+
+  const handleInteraction = () => {
+    setIsAutoPlaying(false);
+    // Resume after 10s of inactivity
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setTimeout(() => setIsAutoPlaying(true), 10000) as unknown as ReturnType<typeof setInterval>;
+  };
+
+  // Touch/swipe support
+  const touchStartX = useRef(0);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      handleInteraction();
+      if (diff > 0) goNext();
+      else goPrev();
+    }
+  };
 
   return (
     <Section className="py-20 relative overflow-hidden" id="resultados">
@@ -57,15 +112,8 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
         </p>
       </div>
 
-      {/* Lista Vertical de Cards */}
-      <div className="flex flex-col gap-16 md:gap-24 relative z-10 max-w-6xl mx-auto mb-32">
-        {cases.map((item, i) => (
-          <ResultCard key={i} item={item} index={i} />
-        ))}
-      </div>
-
       {/* SEÇÃO EDUCATIVA: O EFEITO MAR VERDE */}
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className="relative z-10 max-w-6xl mx-auto mb-24">
 
         <div className="text-center mb-12">
            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4">
@@ -170,8 +218,126 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
         {/* Frase de Efeito Adicionada Abaixo dos Cards */}
         <div className="mt-20 text-center px-4">
             <p className="text-xl md:text-3xl text-slate-200 font-medium italic font-serif">
-              “Não é só aparecer, é gerar contatos <span className="text-amber-500 font-bold not-italic font-sans">TODOS OS DIAS</span>”
+              "Não é só aparecer, é gerar contatos <span className="text-amber-500 font-bold not-italic font-sans">TODOS OS DIAS</span>"
             </p>
+        </div>
+
+      </div>
+
+      {/* ============================================= */}
+      {/* CARROSSEL RÁPIDO DE CASES COM ETIQUETAS       */}
+      {/* ============================================= */}
+      <div className="relative z-10 max-w-6xl mx-auto">
+
+        {/* Header do Carrossel */}
+        <div className="text-center mb-10">
+          <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">
+            Veja na prática: <span className="text-amber-500">resultados reais</span>
+          </h3>
+        </div>
+
+        {/* Etiquetas de Nicho (Tags) */}
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-10">
+          {cases.map((item, i) => (
+            <button
+              key={i}
+              onClick={() => { goTo(i); handleInteraction(); }}
+              className={`px-4 py-2 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider border transition-all duration-300 cursor-pointer
+                ${activeIndex === i
+                  ? `${item.tagColor} scale-105 shadow-lg`
+                  : 'bg-slate-800/60 text-slate-400 border-slate-700 hover:border-slate-500 hover:text-slate-300'
+                }`}
+            >
+              {item.tag}
+            </button>
+          ))}
+          {/* Tags extras para "autoridade ampla" */}
+          {['Estética', 'Advocacia', 'Pet Shop', 'Imóveis'].map((tag, i) => (
+            <span
+              key={`extra-${i}`}
+              className="px-4 py-2 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider border bg-slate-800/30 text-slate-500 border-slate-700/50 cursor-default"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Carrossel Container */}
+        <div 
+          ref={carouselRef}
+          className="relative overflow-hidden rounded-[2rem] border border-slate-700/50 bg-slate-900/50 backdrop-blur-sm"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Slide Track */}
+          <div 
+            className="flex transition-transform duration-700 ease-out"
+            style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+          >
+            {cases.map((item, i) => (
+              <CarouselCard key={i} item={item} />
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={() => { goPrev(); handleInteraction(); }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-700 flex items-center justify-center text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-200 shadow-xl cursor-pointer"
+            aria-label="Anterior"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => { goNext(); handleInteraction(); }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-700 flex items-center justify-center text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-200 shadow-xl cursor-pointer"
+            aria-label="Próximo"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="flex justify-center gap-2 mt-6">
+          {cases.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { goTo(i); handleInteraction(); }}
+              className={`rounded-full transition-all duration-300 cursor-pointer
+                ${activeIndex === i
+                  ? 'w-8 h-2.5 bg-amber-500'
+                  : 'w-2.5 h-2.5 bg-slate-600 hover:bg-slate-500'
+                }`}
+              aria-label={`Ir para case ${i + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* AUTO-PLAY INDICATOR */}
+        {isAutoPlaying && (
+          <div className="flex justify-center mt-3">
+            <div className="flex items-center gap-1.5 text-slate-500 text-[10px] uppercase tracking-widest">
+              <span className="w-1.5 h-1.5 bg-amber-500/60 rounded-full animate-pulse"></span>
+              Rolando automaticamente
+            </div>
+          </div>
+        )}
+
+        {/* ============================================= */}
+        {/* FRASE DE INCLUSÃO AMPLA                       */}
+        {/* ============================================= */}
+        <div className="mt-16 text-center px-4">
+          <div className="inline-block relative">
+            <div className="absolute -inset-x-6 -inset-y-4 bg-gradient-to-r from-amber-500/5 via-emerald-500/5 to-amber-500/5 rounded-2xl blur-xl"></div>
+            <div className="relative bg-slate-900/70 backdrop-blur-sm border border-slate-700/50 rounded-2xl px-8 py-8 md:px-12 md:py-10">
+              <Smartphone className="w-6 h-6 text-amber-500 mx-auto mb-4 opacity-70" />
+              <p className="text-lg md:text-2xl text-slate-200 font-medium leading-relaxed max-w-3xl mx-auto">
+                Se o seu cliente pega o celular para pesquisar o que você faz, <strong className="text-amber-500">o método se aplica a você</strong>.
+              </p>
+              <p className="text-slate-400 text-sm md:text-base mt-3">
+                Já validamos isso em <strong className="text-white">mais de 20 nichos diferentes</strong>.
+              </p>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -180,73 +346,70 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
   );
 };
 
-// Subcomponent to handle image loading logic cleanly
-const ResultCard: React.FC<{ item: any, index: number }> = ({ item, index }) => {
+// Carousel Card Component — altura fixa, imagem com object-cover
+const CarouselCard: React.FC<{ item: any }> = ({ item }) => {
   const [imgError, setImgError] = useState(false);
-  const isEven = index % 2 === 0;
 
   return (
-    <div className={`glass-card rounded-[2rem] border ${item.border} overflow-hidden hover:border-opacity-50 transition-all duration-500 relative group`}>
-      <div className="flex flex-col lg:flex-row h-full">
+    <div className="w-full flex-shrink-0">
+      <div className="flex flex-col lg:flex-row h-[520px] md:h-[420px]">
         
-        {/* IMAGEM (PRINT) - Ocupa 70% no Desktop e mostra TUDO (h-auto) */}
-        <div className={`w-full lg:w-[70%] bg-slate-950 relative border-b lg:border-b-0 ${isEven ? 'lg:order-1 lg:border-r' : 'lg:order-2 lg:border-l'} border-slate-800 flex items-center justify-center p-2 md:p-4`}>
+        {/* IMAGEM (PRINT) — scroll interno para ver tudo */}
+        <div className="w-full lg:w-[55%] bg-slate-950 relative border-b lg:border-b-0 lg:border-r border-slate-800 overflow-y-auto overflow-x-hidden scrollbar-thin">
+          {/* Tag / Etiqueta */}
+          <div className={`sticky top-3 right-0 z-20 float-right mr-3 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest border ${item.tagColor} backdrop-blur-md`}>
+            {item.tag}
+          </div>
+
           {item.image && !imgError ? (
-            <div className="w-full relative shadow-2xl rounded-lg overflow-hidden border border-slate-800/50">
-                <img 
-                    src={item.image} 
-                    alt={`Ranking ${item.niche}`}
-                    className="w-full h-auto block"
-                    onError={() => setImgError(true)}
-                />
-            </div>
+            <img 
+              src={item.image} 
+              alt={`Ranking ${item.niche}`}
+              className="w-full h-auto block"
+              loading="lazy"
+              onError={() => setImgError(true)}
+            />
           ) : (
-            <div className="flex flex-col items-center justify-center w-full min-h-[300px] text-center bg-slate-900/50 rounded-xl">
-              <div className="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center mb-4 border border-slate-700">
-                  <ImageIcon className="w-10 h-10 text-slate-500" />
+            <div className="flex flex-col items-center justify-center w-full h-full text-center bg-slate-900/50">
+              <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-3 border border-slate-700">
+                  <ImageIcon className="w-8 h-8 text-slate-500" />
               </div>
-              <p className="text-white font-bold text-xl mb-1">Aguardando Print</p>
-              <p className="text-slate-500">Imagem do ranking em processamento</p>
+              <p className="text-white font-bold text-base mb-1">Aguardando Print</p>
+              <p className="text-slate-500 text-sm">Imagem em processamento</p>
             </div>
           )}
           
-          {/* Badge flutuante na imagem */}
-          <div className="absolute top-6 left-6 bg-slate-900/90 backdrop-blur-md border border-slate-700 px-4 py-2 rounded-xl flex items-center gap-2 shadow-xl z-20">
-             <MapPin className="w-4 h-4 text-red-500 animate-bounce" />
-             <span className="text-xs text-white font-bold uppercase tracking-wider">Busca Local</span>
-          </div>
+          {/* Badge flutuante — sticky no topo */}
+          <div className="sticky bottom-0 left-0 w-full h-8 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-10"></div>
         </div>
 
-        {/* CONTEÚDO (TEXTO) - Ocupa 30% */}
-        <div className={`w-full lg:w-[30%] p-8 md:p-10 flex flex-col justify-center relative ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-800/20 to-transparent pointer-events-none lg:hidden"></div>
+        {/* CONTEÚDO (TEXTO) — compacto */}
+        <div className="w-full lg:w-[45%] p-6 md:p-8 flex flex-col justify-center overflow-y-auto">
           
-          <div className="relative z-10">
-            <span className={`inline-block text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full mb-6 ${item.bg} ${item.color} border ${item.border}`}>
-                Case: {item.niche}
-            </span>
+          <span className={`inline-block text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full mb-4 ${item.bg} ${item.color} border ${item.border} w-fit`}>
+              Case: {item.niche}
+          </span>
 
-            <h3 className="text-xl md:text-2xl font-bold text-white leading-tight mb-6">
-              "{item.desc}"
-            </h3>
+          <h3 className="text-lg md:text-xl font-bold text-white leading-snug mb-4">
+            "{item.desc}"
+          </h3>
 
-            <div className="bg-slate-900/50 rounded-2xl p-5 border border-slate-800 mb-8">
-                <p className="text-slate-400 text-[10px] uppercase tracking-wider font-bold mb-2">Resultado Principal</p>
-                <div className="flex flex-col">
-                    <span className={`text-4xl font-black block leading-none mb-1 ${item.color}`}>{item.growth}</span>
-                    <span className="text-slate-300 text-xs font-medium uppercase tracking-tight">em {item.metric}</span>
-                </div>
-            </div>
-
-            <ul className="space-y-3">
-                {item.details && item.details.map((detail: string, idx: number) => (
-                    <li key={idx} className="flex items-start gap-3 text-slate-300 text-xs md:text-sm">
-                        <CheckCircle2 className={`w-4 h-4 ${item.color} shrink-0 mt-0.5`} />
-                        <span className="leading-tight">{detail}</span>
-                    </li>
-                ))}
-            </ul>
+          <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800 mb-4">
+              <p className="text-slate-400 text-[10px] uppercase tracking-wider font-bold mb-1">Resultado Principal</p>
+              <div className="flex items-baseline gap-2">
+                  <span className={`text-3xl font-black leading-none ${item.color}`}>{item.growth}</span>
+                  <span className="text-slate-400 text-xs font-medium uppercase">em {item.metric}</span>
+              </div>
           </div>
+
+          <ul className="space-y-2">
+              {item.details && item.details.map((detail: string, idx: number) => (
+                  <li key={idx} className="flex items-center gap-2 text-slate-300 text-xs md:text-sm">
+                      <CheckCircle2 className={`w-3.5 h-3.5 ${item.color} shrink-0`} />
+                      <span className="leading-tight">{detail}</span>
+                  </li>
+              ))}
+          </ul>
         </div>
 
       </div>
