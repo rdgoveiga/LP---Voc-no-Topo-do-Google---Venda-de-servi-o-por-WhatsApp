@@ -88,7 +88,9 @@ export const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ isOpen, onClose 
       const defaultMessage = `Oi Rodrigo, meu nome é ${formData.name}, da empresa ${formData.businessName}. Acabei de solicitar meu diagnóstico no site e quero colocar a minha empresa no top1 do Google.`;
       
       const finalMessage = customMessage 
-        ? customMessage.replace('[Empresa]', formData.businessName).replace('[Nome]', formData.name)
+        ? customMessage
+            .replace(/\[Empresa\]/g, formData.businessName)
+            .replace(/\[Nome\]/g, formData.name)
         : defaultMessage;
 
       // Extrai o número do telefone do link no config.ts
