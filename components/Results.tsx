@@ -86,16 +86,20 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
     intervalRef.current = setTimeout(() => setIsAutoPlaying(true), 10000) as unknown as ReturnType<typeof setInterval>;
   };
 
-  // Touch/swipe support
+  // Touch/swipe support — só troca slide em swipes claramente horizontais
   const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
   const handleTouchEnd = (e: React.TouchEvent) => {
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    // Só ativa se o swipe horizontal for maior que o vertical (intencional)
+    if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
       handleInteraction();
-      if (diff > 0) goNext();
+      if (diffX > 0) goNext();
       else goPrev();
     }
   };
