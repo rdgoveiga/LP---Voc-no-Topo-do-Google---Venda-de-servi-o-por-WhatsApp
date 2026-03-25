@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Section } from './ui/Section';
-import { Image as ImageIcon, MapPin, CheckCircle2, XCircle, ArrowRight, HelpCircle, ChevronLeft, ChevronRight, Smartphone } from 'lucide-react';
+import { Image as ImageIcon, MapPin, CheckCircle2, XCircle, ArrowRight, HelpCircle, ChevronLeft, ChevronRight, ChevronDown, Smartphone } from 'lucide-react';
 import { ABVersion } from '../lib/abTest';
 
 interface ResultsProps {
@@ -346,16 +346,33 @@ export const Results: React.FC<ResultsProps> = ({ version }) => {
   );
 };
 
-// Carousel Card Component — altura fixa, imagem com object-cover
+// Carousel Card Component — altura fixa, scroll interno com indicador
 const CarouselCard: React.FC<{ item: any }> = ({ item }) => {
   const [imgError, setImgError] = useState(false);
+  const [showScrollHint, setShowScrollHint] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Esconde o hint quando o usuário começa a rolar
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      if (el.scrollTop > 30) setShowScrollHint(false);
+      else setShowScrollHint(true);
+    };
+    el.addEventListener('scroll', handleScroll);
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="w-full flex-shrink-0">
       <div className="flex flex-col lg:flex-row h-[520px] md:h-[420px]">
         
         {/* IMAGEM (PRINT) — scroll interno para ver tudo */}
-        <div className="w-full lg:w-[55%] bg-slate-950 relative border-b lg:border-b-0 lg:border-r border-slate-800 overflow-y-auto overflow-x-hidden scrollbar-thin">
+        <div 
+          ref={scrollRef}
+          className="w-full lg:w-[55%] bg-slate-950 relative border-b lg:border-b-0 lg:border-r border-slate-800 overflow-y-auto overflow-x-hidden scrollbar-thin"
+        >
           {/* Tag / Etiqueta */}
           <div className={`sticky top-3 right-0 z-20 float-right mr-3 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest border ${item.tagColor} backdrop-blur-md`}>
             {item.tag}
@@ -378,9 +395,21 @@ const CarouselCard: React.FC<{ item: any }> = ({ item }) => {
               <p className="text-slate-500 text-sm">Imagem em processamento</p>
             </div>
           )}
-          
-          {/* Badge flutuante — sticky no topo */}
-          <div className="sticky bottom-0 left-0 w-full h-8 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-10"></div>
+
+          {/* Indicador de scroll — chamativo e animado */}
+          {showScrollHint && (
+            <div className="sticky bottom-0 left-0 w-full z-20 pointer-events-none">
+              {/* Degradê forte para contraste */}
+              <div className="bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent pt-10 pb-3 flex flex-col items-center gap-1">
+                <span className="text-amber-400 text-[11px] md:text-xs font-bold uppercase tracking-widest animate-pulse pointer-events-none">
+                  ↓ Role para ver a conversa completa ↓
+                </span>
+                <div className="w-6 h-6 flex items-center justify-center animate-bounce">
+                  <ChevronDown className="w-5 h-5 text-amber-500" />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* CONTEÚDO (TEXTO) — compacto */}
