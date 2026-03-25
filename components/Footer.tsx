@@ -9,7 +9,8 @@ export const Footer = () => {
   const handleWhatsAppClick = (e?: React.MouseEvent) => {
     openDiagnosisModal(e, {
       buttonText: 'Falar com o consultor agora',
-      buttonVariant: 'green'
+      buttonVariant: 'green',
+      customMessage: 'Oi Rodrigo, meu nome é [Nome] e gostaria de saber como podemos fazer para atrair mais clientes para o(a) [Empresa].'
     });
   };
 

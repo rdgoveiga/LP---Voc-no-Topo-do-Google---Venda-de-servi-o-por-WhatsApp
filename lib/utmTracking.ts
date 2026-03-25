@@ -45,50 +45,9 @@ export const getUTMs = (): Record<string, string> => {
   }
 };
 
-export const openDiagnosisModal = (e?: React.MouseEvent, options?: { buttonText?: string, buttonVariant?: 'blue' | 'green' }) => {
+export const openDiagnosisModal = (e?: React.MouseEvent, options?: { buttonText?: string, buttonVariant?: 'blue' | 'green', customMessage?: string }) => {
   if (e) e.preventDefault();
   window.dispatchEvent(new CustomEvent('open-diagnosis-modal', { 
     detail: options 
   }));
-};
-
-export const handleWhatsAppRedirect = async (e?: React.MouseEvent) => {
-  if (e) {
-    e.preventDefault();
-  }
-
-  const utmData = getUTMs();
-  const data = new URLSearchParams({
-    ...utmData,
-    timestamp: new Date().toISOString()
-  });
-
-  const webhookUrl = CONFIG.links.webhookUrl;
-
-  if (webhookUrl && webhookUrl !== "https://script.google.com/macros/s/SEU_WEBHOOK_AQUI/exec") {
-    try {
-      // Tenta enviar via fetch com keepalive
-      fetch(webhookUrl, {
-        method: 'POST',
-        body: data,
-        keepalive: true
-      }).catch((err) => {
-        console.warn('Fetch keepalive falhou, tentando sendBeacon...', err);
-        // Fallback para sendBeacon se fetch falhar
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(webhookUrl, data);
-        }
-      });
-    } catch (error) {
-      console.error('Erro ao enviar webhook:', error);
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(webhookUrl, data);
-      }
-    }
-  } else {
-    console.warn('Webhook URL não configurado. Os UTMs não foram enviados.');
-  }
-
-  // Redireciona para o WhatsApp de forma invisível/sem bloquear
-  window.open(CONFIG.links.whatsapp, "_blank");
 };

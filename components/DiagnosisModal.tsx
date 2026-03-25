@@ -13,6 +13,7 @@ export const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ isOpen, onClose 
   const [loading, setLoading] = useState(false);
   const [btnText, setBtnText] = useState('RECEBER DIAGNÓSTICO AGORA');
   const [btnVariant, setBtnVariant] = useState<'blue' | 'green'>('blue');
+  const [customMessage, setCustomMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     businessName: '',
@@ -33,6 +34,9 @@ export const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ isOpen, onClose 
       
       if (e.detail?.buttonVariant) setBtnVariant(e.detail.buttonVariant);
       else setBtnVariant('blue');
+
+      if (e.detail?.customMessage) setCustomMessage(e.detail.customMessage);
+      else setCustomMessage(null);
     };
     window.addEventListener('open-diagnosis-modal' as any, handleOpen);
     return () => window.removeEventListener('open-diagnosis-modal' as any, handleOpen);
@@ -81,8 +85,15 @@ export const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ isOpen, onClose 
       }).catch(() => {});
 
       // 3. Redirecionar IMEDIATAMENTE para o WhatsApp
-      const waMessage = encodeURIComponent(`Oi Rodrigo, meu nome é ${formData.name} da empresa ${formData.businessName}. Acabei de solicitar meu diagnóstico no site e quero saber se minha empresa consegue chegar no Top 1 da minha região.`);
-      const waUrl = `https://wa.me/${CONFIG.links.whatsapp.split('/').pop()?.split('text=')[0]}?text=${waMessage}`;
+      const defaultMessage = `Oi Rodrigo, meu nome é ${formData.name}, da empresa ${formData.businessName}. Acabei de solicitar meu diagnóstico no site e quero colocar a minha empresa no top1 do Google.`;
+      
+      const finalMessage = customMessage 
+        ? customMessage.replace('[Empresa]', formData.businessName).replace('[Nome]', formData.name)
+        : defaultMessage;
+
+      // Extrai o número do telefone do link no config.ts
+      const phoneNumber = CONFIG.links.whatsapp.match(/wa\.me\/(\d+)/)?.[1] || '5521985899548';
+      const waUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(finalMessage)}`;
       
       window.location.href = waUrl;
     } catch (error) {

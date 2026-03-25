@@ -23,7 +23,7 @@ export const CONFIG = {
   meta: {
     pixelId: "1125948262882408",
     accessToken: "EAAl7vzG21UoBQnwpSotxZAdZAYcoyVkyHz2muFevxJv5ldvVsZAfetXCmOGK2wNt7b2eO2fy3MFsCK4BO1JgxrfnpB5WCEtqZCFwjq7kIZAZBIzsOzR3ZB0TV11i2J6xi71p4lK8h5xZCb8YCtsuLBLimxSXCOeR131C9JSHql3R2gzJJhSLR7WjMyPeZCfLZCgQZDZD",
-    testEventCode: "TEST14315" 
+    testEventCode: "" // Deixe vazio para produção, preencha apenas quando quiser debugar a API
   },
 
   // Configurações Visuais
