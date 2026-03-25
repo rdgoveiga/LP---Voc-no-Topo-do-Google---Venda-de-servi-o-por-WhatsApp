@@ -5,7 +5,7 @@ import { Star, ArrowRight, Clock, Gift } from 'lucide-react';
 import { CONFIG } from '../config';
 import { metaTrack } from '../lib/metaTracking';
 import { ABVersion } from '../lib/abTest';
-import { handleWhatsAppRedirect } from '../lib/utmTracking';
+import { openDiagnosisModal } from '../lib/utmTracking';
 
 interface HeroProps {
   version: ABVersion;
@@ -28,14 +28,8 @@ export const Hero: React.FC<HeroProps> = ({ version }) => {
     return `${mins.toString().padStart(2, '0')} : ${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleCTA = async (e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    const eventId = `lead_hero_${Date.now()}`;
-    await metaTrack('Lead', eventId, { 
-      content_name: 'Hero WhatsApp Click',
-      ab_test_version: version 
-    });
-    handleWhatsAppRedirect();
+  const handleCTA = (e?: React.MouseEvent) => {
+    openDiagnosisModal(e);
   };
 
   if (version === 'B') {

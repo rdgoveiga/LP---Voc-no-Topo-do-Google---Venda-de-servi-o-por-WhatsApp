@@ -3,14 +3,14 @@ import React from 'react';
 import { CONFIG } from '../config';
 import { MessageCircle } from 'lucide-react';
 import { metaTrack } from '../lib/metaTracking';
-import { handleWhatsAppRedirect } from '../lib/utmTracking';
+import { openDiagnosisModal } from '../lib/utmTracking';
 
 export const Footer = () => {
   const handleWhatsAppClick = (e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    const eventId = `lead_footer_${Date.now()}`;
-    metaTrack('Lead', eventId, { content_name: 'Footer WhatsApp Click' });
-    handleWhatsAppRedirect();
+    openDiagnosisModal(e, {
+      buttonText: 'Falar com o consultor agora',
+      buttonVariant: 'green'
+    });
   };
 
   return (

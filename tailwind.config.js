@@ -27,8 +27,13 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'spin-slow': 'spin 8s linear infinite',
         'scroll': 'scroll 1.5s infinite',
+        'bounce-slow': 'bounce-slow 3s infinite',
       },
       keyframes: {
+        'bounce-slow': {
+          '0%, 100%': { transform: 'translateY(-5%)', 'animation-timing-function': 'cubic-bezier(0.8,0,1,1)' },
+          '50%': { transform: 'none', 'animation-timing-function': 'cubic-bezier(0,0,0.2,1)' }
+        },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-15px)' },

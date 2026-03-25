@@ -19,12 +19,20 @@ import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { StickyCTA } from './components/StickyCTA';
 
+import { DiagnosisModal } from './components/DiagnosisModal';
+
 const App = () => {
   const [version, setVersion] = useState<ABVersion>('A');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     captureUTMs();
     setVersion(getABVersion());
+
+    // Listener para abrir o modal de qualquer lugar
+    const handleOpenModal = () => setIsModalOpen(true);
+    window.addEventListener('open-diagnosis-modal', handleOpenModal);
+    return () => window.removeEventListener('open-diagnosis-modal', handleOpenModal);
   }, []);
 
   return (
@@ -42,6 +50,11 @@ const App = () => {
       <Footer />
       <FloatingWhatsApp />
       <StickyCTA />
+      
+      <DiagnosisModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   );
 };

@@ -45,6 +45,13 @@ export const getUTMs = (): Record<string, string> => {
   }
 };
 
+export const openDiagnosisModal = (e?: React.MouseEvent, options?: { buttonText?: string, buttonVariant?: 'blue' | 'green' }) => {
+  if (e) e.preventDefault();
+  window.dispatchEvent(new CustomEvent('open-diagnosis-modal', { 
+    detail: options 
+  }));
+};
+
 export const handleWhatsAppRedirect = async (e?: React.MouseEvent) => {
   if (e) {
     e.preventDefault();

@@ -33,7 +33,7 @@ export const CONFIG = {
 
   // Links de Conversão
   links: {
-    whatsapp: "https://wa.me/5521985899548?text=Oi,%20Acabei%20de%20ver%20o%20seu%20site%20e%20gostaria%20de%20aparecer%20para%20quem%20busca%20pelo%20meu%20servi%C3%A7o.",
-    webhookUrl: "https://script.google.com/macros/s/AKfycbwtb1IB3I8NseL2u0aBaCYz6P1_LS1Bpen1HQCSWwyFV7JSM7a0FSnj9sLg9_EfPFXPKg/exec" // Substitua pelo URL do seu webhook do Google Sheets
+    whatsapp: "https://wa.me/5521985899548?text=Oi%20Rodrigo%2C%20vi%20o%20seu%20site%20e%20quero%20saber%20se%20minha%20empresa%20consegue%20chegar%20no%20Top%201%20da%20minha%20regi%C3%A3o.%20Como%20funciona%20o%20diagn%C3%B3stico%3F",
+    webhookUrl: "https://script.google.com/macros/s/AKfycbwGsmaRHksfCJyYDE01GNVPI0vYGf74ZdyXvL5kaqTh4k1RwX3IeFTw1EcOvXbH18v6IQ/exec" // Novo webhook do Google Sheets do usuário
   }
 };

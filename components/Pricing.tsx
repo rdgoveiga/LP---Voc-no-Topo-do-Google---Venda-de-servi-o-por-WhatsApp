@@ -5,9 +5,15 @@ import { Button } from './ui/Button';
 import { ShieldCheck, Zap, ArrowRight, Clock, Shield, Gift } from 'lucide-react';
 import { CONFIG } from '../config';
 import { metaTrack } from '../lib/metaTracking';
-import { handleWhatsAppRedirect } from '../lib/utmTracking';
+import { openDiagnosisModal } from '../lib/utmTracking';
 
-export const Pricing = () => {
+import { ABVersion } from '../lib/abTest';
+
+interface PricingProps {
+  version?: ABVersion;
+}
+
+export const Pricing: React.FC<PricingProps> = ({ version }) => {
   const [timeLeft, setTimeLeft] = useState(300);
 
   useEffect(() => {
@@ -24,11 +30,8 @@ export const Pricing = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleBuyClick = async (e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    const eventId = `lead_pricing_${Date.now()}`;
-    await metaTrack('Lead', eventId, { content_name: 'Pricing WhatsApp Click' });
-    handleWhatsAppRedirect();
+  const handleBuyClick = (e?: React.MouseEvent) => {
+    openDiagnosisModal(e);
   };
 
   return (
@@ -72,7 +75,7 @@ export const Pricing = () => {
               O seu negócio merece destaque e <span className="text-white font-bold underline decoration-amber-500/30 underline-offset-4">clientes todos os dias</span>. 
             </p>
             <p className="text-slate-400 text-sm md:text-xl max-w-xl mx-auto leading-relaxed">
-              Clique no botão abaixo para receber um <span className="text-amber-500 font-bold">diagnóstico gratuito</span> e orçamento.
+              Clique no botão abaixo para receber um <span className="text-amber-500 font-bold">diagnóstico gratuito</span>.
             </p>
           </div>
 

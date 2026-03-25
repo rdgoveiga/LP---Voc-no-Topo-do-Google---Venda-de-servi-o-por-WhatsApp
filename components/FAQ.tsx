@@ -15,7 +15,7 @@ export const FAQ = () => {
     },
     {
       q: "Eu preciso fazer alguma coisa?",
-      a: "Nosso serviço é 'mão na massa'. Nós cuidamos da parte técnica. Você só precisará nos fornecer algumas fotos e informações básicas do seu negócio quando solicitado."
+      a: "Você investe 10 minutos do seu tempo preenchendo um formulário e nós cuidamos de 100% da engenharia técnica."
     },
     {
       q: "Como iniciamos o trabalho?",

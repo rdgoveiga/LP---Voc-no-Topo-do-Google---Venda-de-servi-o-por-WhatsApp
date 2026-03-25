@@ -7,6 +7,40 @@ declare global {
   }
 }
 
+// Cache local para o IP para evitar múltiplas chamadas à API externa
+let cachedIp: string | null = null;
+
+export const getClientIp = async () => {
+  if (cachedIp) return cachedIp;
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1500);
+    
+    const response = await fetch('https://api64.ipify.org?format=json', { signal: controller.signal });
+    clearTimeout(timeoutId);
+    
+    const data = await response.json();
+    cachedIp = data.ip;
+    return cachedIp;
+  } catch (err) {
+    return null;
+  }
+};
+
+const getFbc = () => {
+  const cookieFbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
+  if (cookieFbc) return cookieFbc;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const fbclid = urlParams.get('fbclid');
+  if (fbclid) {
+    const fbc = `fb.1.${Date.now()}.${fbclid}`;
+    document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`;
+    return fbc;
+  }
+  return null;
+};
+
 const getExternalId = () => {
   let extId = localStorage.getItem('meta_ext_id');
   if (!extId) {
@@ -16,10 +50,23 @@ const getExternalId = () => {
   return extId;
 };
 
-export const metaTrack = async (eventName: string, eventId: string, customData: any = {}) => {
+// Utility to hash sensitive data for Meta (SHA-256)
+async function hashData(data: string): Promise<string> {
+  if (!data || data.trim() === "") return "";
+  const encoder = new TextEncoder();
+  const dataBuffer = encoder.encode(data.trim().toLowerCase());
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+export const metaTrack = async (eventName: string, eventId: string, customData: any = {}, userData: { em?: string, ph?: string, fn?: string } = {}) => {
   const externalId = getExternalId();
-  const currentUrl = window.location.href.split('?')[0];
   const abVersion = localStorage.getItem('ab_version') || 'A';
+  
+  const clientIp = await getClientIp();
+  const fbc = getFbc();
+  const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1] || null;
 
   const enrichedData = {
     ...customData,
@@ -27,41 +74,46 @@ export const metaTrack = async (eventName: string, eventId: string, customData: 
     external_id: externalId
   };
 
-  // Disparo imediato do Pixel (Navegador)
+  const hashedUserData: any = {
+    client_ip_address: clientIp,
+    client_user_agent: navigator.userAgent,
+    fbp,
+    fbc,
+    external_id: externalId
+  };
+
+  if (userData.em) hashedUserData.em = await hashData(userData.em);
+  if (userData.ph) hashedUserData.ph = await hashData(userData.ph);
+  if (userData.fn) hashedUserData.fn = await hashData(userData.fn);
+
   if (window.fbq) {
     window.fbq('track', eventName, enrichedData, { 
       eventID: eventId 
     });
   }
 
-  // Disparo em background da CAPI (Servidor)
-  const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1] || null;
-  const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1] || null;
-
   const payload = {
     data: [{
       event_name: eventName,
       event_time: Math.floor(Date.now() / 1000),
       event_id: eventId,
-      event_source_url: currentUrl,
+      event_source_url: window.location.href,
       action_source: "website",
-      user_data: {
-        client_user_agent: navigator.userAgent,
-        fbp, fbc, external_id: externalId
-      },
+      user_data: hashedUserData,
       custom_data: {
         ...enrichedData,
-        client_type: "high_conversion_hybrid_ab"
+        client_type: "high_conversion_hybrid_ab_qualifier"
       }
     }],
     ...(CONFIG.meta.testEventCode && { test_event_code: CONFIG.meta.testEventCode })
   };
 
-  fetch(`https://graph.facebook.com/v19.0/${CONFIG.meta.pixelId}/events?access_token=${CONFIG.meta.accessToken}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).catch(() => {});
-
-  return new Promise(resolve => setTimeout(resolve, 100));
+  try {
+    fetch(`https://graph.facebook.com/v19.0/${CONFIG.meta.pixelId}/events?access_token=${CONFIG.meta.accessToken}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true // MANTÉM A REQUISIÇÃO VIVA MESMO SE A PÁGINA FOR FECHADA/REDIRECIONADA
+    });
+  } catch (e) {}
 };

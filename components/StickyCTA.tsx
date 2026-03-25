@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { CONFIG } from '../config';
 import { metaTrack } from '../lib/metaTracking';
-import { handleWhatsAppRedirect } from '../lib/utmTracking';
+import { openDiagnosisModal } from '../lib/utmTracking';
 
 export const StickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,11 +18,8 @@ export const StickyCTA = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleClick = async (e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    const eventId = `lead_sticky_${Date.now()}`;
-    await metaTrack('Lead', eventId, { content_name: 'Sticky Mobile Click' });
-    handleWhatsAppRedirect();
+  const handleClick = (e?: React.MouseEvent) => {
+    openDiagnosisModal(e);
   };
 
   if (!isVisible) return null;
