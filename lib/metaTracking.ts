@@ -4,6 +4,69 @@ import { CONFIG } from '../config';
 declare global {
   interface Window {
     fbq?: (...args: any[]) => void;
+    __IS_TEST_ENV__?: boolean;
+    enableTestMode?: () => void;
+    disableTestMode?: () => void;
+    enableInternalMode?: () => void;
+    disableInternalMode?: () => void;
+  }
+}
+
+// IPs e dados internos conhecidos para bloqueio automático (Sem configuração manual necessária)
+const BLOCKED_IPS = ['179.225.47.49']; 
+const BLOCKED_NAMES = ['Teste', 'Rodrigo Veiga', 'Rodrigo', 'Admin'];
+
+// Inicialização da lógica de ambiente de teste e usuário interno
+if (typeof window !== 'undefined') {
+  const checkTestEnv = async (): Promise<boolean> => {
+    const hostname = window.location.hostname;
+    const params = new URLSearchParams(window.location.search);
+    const isTestUser = localStorage.getItem('test_user') === 'true';
+    const isInternalUser = localStorage.getItem('internal_user') === 'true';
+
+    // 1. Bloqueia em ambiente local ou staging
+    const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+    const isStaging = hostname.includes('staging-') || hostname.includes('dev-');
+    
+    // 2. Bloqueia se tiver ?test=true na URL
+    const isTestParam = params.get('test') === 'true';
+
+    // 3. Bloqueia se o IP for reconhecido como do cliente (Busca IP em background)
+    const clientIp = await getClientIp();
+    const isBlockedIp = clientIp ? BLOCKED_IPS.includes(clientIp) : false;
+
+    const result = isLocal || isStaging || isTestParam || isTestUser || isInternalUser || isBlockedIp;
+    
+    // Atualiza a flag global
+    window.__IS_TEST_ENV__ = result;
+    return result;
+  };
+
+  // Executa checagem inicial
+  checkTestEnv();
+
+  window.enableTestMode = () => {
+    localStorage.setItem('test_user', 'true');
+    window.__IS_TEST_ENV__ = true;
+    console.log('%c[Test Mode] ATIVADO.', 'color: #fff; background: #ff0000; padding: 4px; border-radius: 4px;');
+  };
+
+  window.disableTestMode = () => {
+    localStorage.removeItem('test_user');
+    window.__IS_TEST_ENV__ = false;
+    console.log('%c[Test Mode] DESATIVADO.', 'color: #fff; background: #00aa00; padding: 4px; border-radius: 4px;');
+  };
+
+  window.enableInternalMode = () => {
+    localStorage.setItem('internal_user', 'true');
+    window.__IS_TEST_ENV__ = true;
+    console.log('%c[Internal User] ATIVADO.', 'color: #fff; background: #9c27b0; padding: 4px; border-radius: 4px;');
+  };
+
+  window.disableInternalMode = () => {
+    localStorage.removeItem('internal_user');
+    window.__IS_TEST_ENV__ = false;
+    console.log('%c[Internal User] DESATIVADO.', 'color: #fff; background: #607d8b; padding: 4px; border-radius: 4px;');
   }
 }
 
@@ -61,10 +124,30 @@ async function hashData(data: string): Promise<string> {
 }
 
 export const metaTrack = async (eventName: string, eventId: string, customData: any = {}, userData: { em?: string, ph?: string, fn?: string } = {}) => {
+  if (typeof window === 'undefined') return;
+
+  // 1. Verificação por Flags Globais / IP (com fallback caso o async inicial ainda não tenha terminado)
+  const clientIp = await getClientIp();
+  const isBlockedIp = clientIp ? BLOCKED_IPS.includes(clientIp) : false;
+  
+  if (window.__IS_TEST_ENV__ || isBlockedIp) {
+    console.log(`%c[Meta Tracking] Evento "${eventName}" ignorado (Filtro de Ambiente/IP)`, 'color: #777; font-style: italic;');
+    return;
+  }
+
+  // 2. Verificação de Dados (Nome de Teste ou Telefone do Dono)
+  const ownerPhone = CONFIG.links.whatsapp.match(/wa\.me\/(\d+)/)?.[1] || '';
+  const isOwnerData = (userData.ph && userData.ph === ownerPhone) || 
+                     (userData.fn && BLOCKED_NAMES.some(name => userData.fn?.toLowerCase().includes(name.toLowerCase())));
+
+  if (isOwnerData) {
+    console.log(`%c[Meta Tracking] Evento "${eventName}" bloqueado (Dados do proprietário detectados)`, 'color: #fff; background: #960000; padding: 2px 4px; border-radius: 2px;');
+    return;
+  }
+
   const externalId = getExternalId();
   const abVersion = localStorage.getItem('ab_version') || 'A';
   
-  const clientIp = await getClientIp();
   const fbc = getFbc();
   const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1] || null;
 
