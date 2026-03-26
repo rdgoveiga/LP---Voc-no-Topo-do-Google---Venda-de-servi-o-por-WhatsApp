@@ -16,35 +16,65 @@ declare global {
 const BLOCKED_IPS = ['179.225.47.49']; 
 const BLOCKED_NAMES = ['Teste', 'Rodrigo Veiga', 'Rodrigo', 'Admin'];
 
-// Inicialização da lógica de ambiente de teste e usuário interno
+// Cache para a promessa de checagem de ambiente
+let testEnvPromise: Promise<boolean> | null = null;
+
+// Função interna de checagem robusta
+const checkTestEnv = async (): Promise<boolean> => {
+  if (typeof window === 'undefined') return false;
+  
+  const hostname = window.location.hostname;
+  const params = new URLSearchParams(window.location.search);
+  const isLocalStorageTest = localStorage.getItem('test_user') === 'true' || localStorage.getItem('internal_user') === 'true';
+
+  // 1. Bloqueios Síncronos (Instantâneos)
+  const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+  const isStaging = hostname.includes('staging') || hostname.includes('dev') && !hostname.includes('lpgmn.vercel.app');
+  const isTestParam = params.get('test') === 'true';
+
+  // Se já detectamos pelos meios síncronos, marcamos a flag imediatamente
+  if (isLocal || isStaging || isTestParam || isLocalStorageTest) {
+    window.__IS_TEST_ENV__ = true;
+  }
+
+  // 2. Bloqueio Assíncrono (IP)
+  const clientIp = await getClientIp();
+  const isBlockedIp = clientIp ? BLOCKED_IPS.includes(clientIp) : false;
+
+  const result = isLocal || isStaging || isTestParam || isLocalStorageTest || isBlockedIp;
+  
+  // Atualiza a flag global final
+  window.__IS_TEST_ENV__ = result;
+  return result;
+};
+
+/**
+ * Garante que a verificação de ambiente foi concluída.
+ * Todas as chamadas de tracking devem aguardar essa função.
+ */
+export const ensureTestEnvReady = async (): Promise<boolean> => {
+  if (typeof window === 'undefined') return false;
+  
+  // Se a flag já estiver definida, retorna o valor
+  if (window.__IS_TEST_ENV__ !== undefined) {
+    return window.__IS_TEST_ENV__;
+  }
+
+  // Se já houver uma checagem em curso, aguarda ela
+  if (testEnvPromise) {
+    return testEnvPromise;
+  }
+
+  // Caso contrário, inicia uma nova checagem
+  testEnvPromise = checkTestEnv();
+  return testEnvPromise;
+};
+
+// Inicialização imediata no carregamento do script
 if (typeof window !== 'undefined') {
-  const checkTestEnv = async (): Promise<boolean> => {
-    const hostname = window.location.hostname;
-    const params = new URLSearchParams(window.location.search);
-    const isTestUser = localStorage.getItem('test_user') === 'true';
-    const isInternalUser = localStorage.getItem('internal_user') === 'true';
+  ensureTestEnvReady();
 
-    // 1. Bloqueia em ambiente local ou staging
-    const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
-    const isStaging = hostname.includes('staging-') || hostname.includes('dev-');
-    
-    // 2. Bloqueia se tiver ?test=true na URL
-    const isTestParam = params.get('test') === 'true';
-
-    // 3. Bloqueia se o IP for reconhecido como do cliente (Busca IP em background)
-    const clientIp = await getClientIp();
-    const isBlockedIp = clientIp ? BLOCKED_IPS.includes(clientIp) : false;
-
-    const result = isLocal || isStaging || isTestParam || isTestUser || isInternalUser || isBlockedIp;
-    
-    // Atualiza a flag global
-    window.__IS_TEST_ENV__ = result;
-    return result;
-  };
-
-  // Executa checagem inicial
-  checkTestEnv();
-
+  // Helper functions expostas no window
   window.enableTestMode = () => {
     localStorage.setItem('test_user', 'true');
     window.__IS_TEST_ENV__ = true;
@@ -54,6 +84,8 @@ if (typeof window !== 'undefined') {
   window.disableTestMode = () => {
     localStorage.removeItem('test_user');
     window.__IS_TEST_ENV__ = false;
+    testEnvPromise = null;
+    ensureTestEnvReady();
     console.log('%c[Test Mode] DESATIVADO.', 'color: #fff; background: #00aa00; padding: 4px; border-radius: 4px;');
   };
 
@@ -66,6 +98,8 @@ if (typeof window !== 'undefined') {
   window.disableInternalMode = () => {
     localStorage.removeItem('internal_user');
     window.__IS_TEST_ENV__ = false;
+    testEnvPromise = null;
+    ensureTestEnvReady();
     console.log('%c[Internal User] DESATIVADO.', 'color: #fff; background: #607d8b; padding: 4px; border-radius: 4px;');
   }
 }
@@ -126,22 +160,40 @@ async function hashData(data: string): Promise<string> {
 export const metaTrack = async (eventName: string, eventId: string, customData: any = {}, userData: { em?: string, ph?: string, fn?: string } = {}) => {
   if (typeof window === 'undefined') return;
 
-  // 1. Verificação por Flags Globais / IP (com fallback caso o async inicial ainda não tenha terminado)
+  // 1. Aguarda a verificação de ambiente estar 100% concluída
+  const isTestEnv = await ensureTestEnvReady();
+
+  // 2. Redundância de Segurança (Verificação Síncrona + IP Cacheado)
+  const hostname = window.location.hostname;
+  const params = new URLSearchParams(window.location.search);
+  const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+  const isStaging = hostname.includes('staging') || hostname.includes('dev') && !hostname.includes('lpgmn.vercel.app');
+  const isTestParam = params.get('test') === 'true';
+  const isInternal = localStorage.getItem('test_user') === 'true' || localStorage.getItem('internal_user') === 'true';
   const clientIp = await getClientIp();
   const isBlockedIp = clientIp ? BLOCKED_IPS.includes(clientIp) : false;
-  
-  if (window.__IS_TEST_ENV__ || isBlockedIp) {
-    console.log(`%c[Meta Tracking] Evento "${eventName}" ignorado (Filtro de Ambiente/IP)`, 'color: #777; font-style: italic;');
+
+  // Motivos detalhados para o log (Formato solicitado)
+  let blockReason = "";
+  if (isLocal) blockReason = "ambiente local";
+  else if (isStaging) blockReason = "ambiente de teste / dev";
+  else if (isTestParam) blockReason = "parâmetro de teste (?test=true)";
+  else if (isInternal) blockReason = "usuário interno";
+  else if (isBlockedIp) blockReason = "IP bloqueado";
+  else if (isTestEnv) blockReason = "ambiente de teste";
+
+  if (blockReason) {
+    console.log(`%c[Meta Tracking] Evento "${eventName}" bloqueado (motivo: ${blockReason})`, 'color: #e91e63; font-weight: bold;');
     return;
   }
 
-  // 2. Verificação de Dados (Nome de Teste ou Telefone do Dono)
+  // 3. Verificação de Dados (Nome de Teste ou Telefone do Dono)
   const ownerPhone = CONFIG.links.whatsapp.match(/wa\.me\/(\d+)/)?.[1] || '';
   const isOwnerData = (userData.ph && userData.ph === ownerPhone) || 
                      (userData.fn && BLOCKED_NAMES.some(name => userData.fn?.toLowerCase().includes(name.toLowerCase())));
 
   if (isOwnerData) {
-    console.log(`%c[Meta Tracking] Evento "${eventName}" bloqueado (Dados do proprietário detectados)`, 'color: #fff; background: #960000; padding: 2px 4px; border-radius: 2px;');
+    console.log(`%c[Meta Tracking] Evento "${eventName}" bloqueado (motivo: dados do proprietário detectados)`, 'color: #fff; background: #960000; padding: 2px 4px; border-radius: 2px;');
     return;
   }
 
